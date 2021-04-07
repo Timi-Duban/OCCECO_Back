@@ -1,0 +1,43 @@
+{
+  "name": "occeco_back",
+  "version": "1.0.0",
+  "description": "Bienvenue sur le back de l'application OCCECO, réalisée par 3 élèves ingénieurs de Polytech Montpellier : Timi Duban, Rogerio Mensah et Alexia Ognard.",
+  "main": "app.js",
+  "engines": {
+    "node": "14.15.4",
+    "npm": "6.14.10"
+  },
+  "dependencies": {
+    "bcryptjs": "2.4.3",
+    "body-parser": "1.19.0",
+    "cors": "2.8.5",
+    "dotenv": "8.2.0",
+    "express": "4.17.1",
+    "http": "0.0.1-security",
+    "jsonwebtoken": "8.5.1",
+    "moment": "2.24.0",
+    "mongodb": "latest",
+    "mongoose": "^5.12.3",
+    "morgan": "1.10.0",
+    "nodemon": "2.0.3"
+  },
+  "devDependencies": {
+    "dotenv": "8.2.0"
+  },
+  "scripts": {
+    "heroku-postbuild": "npm install",
+    "test": "Error: no test specified yet",
+    "start": "node server.js",
+    "dev-start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Timi-Duban/OCCECO_Back.git"
+  },
+  "author": "Timi Duban, Rogerio Mensah and Alexia Ognard",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Timi-Duban/OCCECO_Back/issues"
+  },
+  "homepage": "https://github.com/Timi-Duban/OCCECO_Back#readme"
+}

@@ -3,3 +3,13 @@ Bienvenue sur le back de l'application OCCECO, réalisée par 3 élèves ingéni
 
 # WIP
 Nous sommes actuellement en cours de développement, nous aurons une version stable fin mai !
+
+## Project setup
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run dev-start
+```
