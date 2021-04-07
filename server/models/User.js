@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     },
 
     userLocalisation: {
-        type: Localisation,
+        type: String, //TODO : type localisation
         required: false,
     },
 
