@@ -7,7 +7,7 @@ const userController = require('../../controllers/userController');
 module.exports = async (req, res, next) => {
     try {
         /* Check inputs */
-        if (!req.body.email || !req.body.email.toLowerCase().match(regEmail) || !req.body.password){
+        if (!req.body.userMail || !req.body.userMail.toLowerCase().match(regEmail) || !req.body.userPassword){
             return res.status(400).json({error : "Input(s) non valide(s)"});
         }
 
@@ -17,13 +17,12 @@ module.exports = async (req, res, next) => {
         }
         else {
             /* Create users */
-            const user = await userController.createUser(req.body.email.toLowerCase(), req.body.password, req.body.admin);
-
+            const user = await userController.createUser(req.body.userMail.toLowerCase(), req.body.userPassword, req.body.userType, req.body.userLocalisation, req.body.userArticlesLinked, req.body.userCategories, req.body.userDistance, req.body.userLogoURL);
             /* User created */
             const tokenUser = {
                 id: user._id,
-                email: user.email,
-                admin: user.admin
+                userMail: user.userMail,
+                userType: user.userType
             };
             const token = jwt.sign(tokenUser, process.env.tokenkey, {expiresIn: '200000h'});
 

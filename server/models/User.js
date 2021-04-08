@@ -27,9 +27,9 @@ const userSchema = new mongoose.Schema({
     },
 
     userArticlesLinked: {
-        type: [{ 
-            articleId : {type: mongoose.ObjectId, ref: 'Article' }, 
-            isOpen : { type: Boolean }, 
+        type: [{
+            articleId : {type: mongoose.ObjectId, ref: 'Article' },
+            isOpen : { type: Boolean },
         }],
     },
 

@@ -3,29 +3,25 @@ const passwordEncryption = require('../encryption/passwordEncryption');
 
 const getUserById = async(_id) => {
     try {
-        return await User.findById(_id).select('-password')
+        return await User.findById(_id).select('-userPassword')
     } catch (error) {
         console.log(error)
         throw error;
     }
 };
 
-const getUserByEmail = async(email) => {
+const getUserByEmail = async(userMail) => {
     try {
-        return await User.findOne({email});
+        return await User.findOne({userMail});
     } catch(error) {
         throw error;
     }
 };
 
-// TODO
-const createUser = async (userMail, userPassword, userType, userArticl, localisation, userCategories, userDistance) => {
-    const hashedPassword = await passwordEncryption.passwordEncryption(password);
+const createUser = async (userMail, userPassword, userType, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL) => {
+    const hashedPassword = await passwordEncryption.passwordEncryption(userPassword);
     try {
-        const user = new User({
-            userMail,
-            userPassword: hashedPassword,
-            userType: userType,
+        const user = new User({userMail, userPassword: hashedPassword, userType, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL
         });
         return await user.save();
     } catch (error) {

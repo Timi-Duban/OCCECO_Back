@@ -10,25 +10,25 @@ const passwordEncryption = require('../../encryption/passwordEncryption');
 module.exports = async (req, res) => {
     try {
         /* Check inputs */
-        if (!req.body.email || !req.body.email.toLowerCase().match(regEmail) || !req.body.password){
+        if (!req.body.userMail || !req.body.userMail.toLowerCase().match(regEmail) || !req.body.userPassword){
             return res.status(400).json({error : "Input(s) non valide(s)"});
         }
 
         /* Check email */
-        const user = await userController.getUserByEmail(req.body.email.toLowerCase());
+        const user = await userController.getUserByEmail(req.body.userMail.toLowerCase());
         if (!user){
             return res.status(400).json({error : "Cet mail n'est pas dans notre base de donnée"});
         }
         else {
 
             /* Got users's informations */
-            if(passwordEncryption.passwordCompare(req.body.password, user.password)){
+            if(passwordEncryption.passwordCompare(req.body.userPassword, user.userPassword)){
 
                 /* User valid */
                 const tokenUser = {
                     id: user._id,
-                    email: user.email,
-                    admin: user.admin
+                    userMail: user.userMail,
+                    userType: user.userType
                 };
                 const token = jwt.sign(tokenUser, process.env.tokenkey, {expiresIn: '200000h'});
 
