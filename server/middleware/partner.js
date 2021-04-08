@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
                     res.status(401).json({error: "Unauthorized" });
                 }
                 else{
-                    if(result && result.typeUser == "Partenaire"){
+                    if(result && result.userType == "partner"){
                         next();
                     }else{
                         res.status(401).json({error: "Unauthorized" });

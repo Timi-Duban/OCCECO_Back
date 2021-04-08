@@ -12,12 +12,12 @@ module.exports = async (req, res, next) => {
         }
 
         /* Check if database knows this mail */
-        if (await userController.getUserByEmail(req.body.email)){
+        if (await userController.getUserByEmail(req.body.userMail)){
             return res.status(400).json({error : "Cet email est déjà utilisé"});
         }
         else {
             /* Create users */
-            const user = await userController.createUser(req.body.userMail.toLowerCase(), req.body.userPassword, req.body.userType, req.body.userLocalisation, req.body.userArticlesLinked, req.body.userCategories, req.body.userDistance, req.body.userLogoURL);
+            const user = await userController.createUser(req.body.userMail.toLowerCase(), req.body.userPassword, "client", req.body.userLocalisation, req.body.userArticlesLinked, req.body.userCategories, req.body.userDistance, req.body.userLogoURL);
             /* User created */
             const tokenUser = {
                 id: user._id,
