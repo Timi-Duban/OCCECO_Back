@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [ true, "Le mot de passe est obligatoire" ]
     },
-
+    
     userType: {
         type: String,
         required: true,
@@ -20,8 +20,10 @@ const userSchema = new mongoose.Schema({
     },
 
     userLocalisation: {
-        type: String, //TODO : type localisation
-        required: false,
+        localisationNumber: { type: Number },
+        localisationStreet: { type: String },
+        localisationPostalCode: { type: Number },
+        localisationCity: { type: String }
     },
 
     userArticlesLinked: {
@@ -38,6 +40,10 @@ const userSchema = new mongoose.Schema({
     userDistance: {
         type: Number,
         default: 100,
+    },
+
+    userLogoURL: {
+        type: String
     }
 
 });
