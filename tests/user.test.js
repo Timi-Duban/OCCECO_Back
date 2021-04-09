@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const dbHandler = require('./db-handler');
 const userController = require('../server/controllers/userController');
 const userModel = require('../server/models/user');
@@ -22,7 +21,7 @@ const userModel = require('../server/models/user');
  
 
  /**
-  * User test suite.
+  * User CRUD test suite.
   */
  describe('user CRUD', () => {
     it('can be created', async () => {
@@ -72,15 +71,11 @@ const userModel = require('../server/models/user');
         const createdUser = await userModel.findOne();
         await userController.deleteUser(createdUser._id)
         expect(await userModel.findOne()).toBe(null)
-
     });
-
-
-
  });
  
  /**
-  * Complete user example.
+  * User moked examples.
   */
  const basicUser = {
     userMail: "userMail@mail.com",
