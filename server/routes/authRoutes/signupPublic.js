@@ -31,6 +31,7 @@ module.exports = async (req, res, next) => {
                 message: 'Connected !',
                 token: token,
                 userId: user._id,
+                user: user
             });
         }
     }
