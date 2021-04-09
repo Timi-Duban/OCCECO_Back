@@ -12,7 +12,8 @@ const getUserById = async(_id) => {
 
 const getUserByEmail = async(userMail) => {
     try {
-        return await User.findOne({userMail});
+        const userMailLowerCased = userMail.toLowerCase()
+        return await User.findOne({userMail: userMailLowerCased});
     } catch(error) {
         throw error;
     }
@@ -21,7 +22,8 @@ const getUserByEmail = async(userMail) => {
 const createUser = async (userMail, userPassword, userType, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL) => {
     const hashedPassword = await passwordEncryption.passwordEncryption(userPassword);
     try {
-        const user = new User({userMail, userPassword: hashedPassword, userType, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL
+        const userMailLowerCased = userMail.toLowerCase()
+        const user = new User({userMail: userMailLowerCased, userPassword: hashedPassword, userType, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL
         });
         return await user.save();
     } catch (error) {
@@ -29,10 +31,10 @@ const createUser = async (userMail, userPassword, userType, userLocalisation, us
     }
 };
 
-const updatePassword = async (_id,password) => {
+const updatePassword = async (_id,userPassword) => {
     try {
-        const hashedPassword = await passwordEncryption.passwordEncryption(password);
-        return await User.findOneAndUpdate({_id},{password:hashedPassword},{new:true});
+        const hashedPassword = await passwordEncryption.passwordEncryption(userPassword);
+        return await User.findOneAndUpdate({_id},{userPassword:hashedPassword},{new:true});
     } catch (error) {
         throw error;
     }

@@ -17,7 +17,7 @@ module.exports = async (req, res, next) => {
         }
         else {
             /* Create users */
-            const user = await userController.createUser(req.body.userMail.toLowerCase(), req.body.userPassword, "client", req.body.userLocalisation, req.body.userArticlesLinked, req.body.userCategories, req.body.userDistance, req.body.userLogoURL);
+            const user = await userController.createUser(req.body.userMail, req.body.userPassword, "client", req.body.userLocalisation, req.body.userArticlesLinked, req.body.userCategories, req.body.userDistance, req.body.userLogoURL);
             /* User created */
             const tokenUser = {
                 id: user._id,
