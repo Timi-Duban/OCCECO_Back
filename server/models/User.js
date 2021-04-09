@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-
     userMail: {
         type: String,
         required: [ true, "Le mail de l'utilisateur est obligatoire" ]
@@ -45,7 +44,6 @@ const userSchema = new mongoose.Schema({
     userLogoURL: {
         type: String
     }
-
 });
 
 module.exports = mongoose.model('User', userSchema);

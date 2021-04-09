@@ -1,5 +1,8 @@
 require('dotenv').config();
 
+/**
+ * Middleware that check is the user is at least a partner.
+ */
 module.exports = (req, res, next) => {
     if(req.headers["authorization"]){
         const token = req.headers["authorization"].split(" ")[1];

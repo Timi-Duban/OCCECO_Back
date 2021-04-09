@@ -1,6 +1,10 @@
 const User = require('../models/user');
 const passwordEncryption = require('../encryption/passwordEncryption');
 
+/**
+ * @param {mongoose.ObjectId} _id 
+ * @returns {User} User's infos except password
+ */
 const getUserById = async(_id) => {
     try {
         return await User.findById(_id).select('-userPassword')
