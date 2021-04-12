@@ -24,10 +24,8 @@ app.use(morgan('dev')); // Color the status response, dev use
 
 app.use(cors()); // To control who can connect, all origins here
 
-
 // routes publiques, utilisées pour se connecter
 app.use("/api", require('./server/routes/authRoutes'));
-
 
 // routes accessibles par n'importe quel utilisateur connecté
 //app.use("/api", require('./server/middleware/auth'), require('./server/routes/connectedRoutes'));
