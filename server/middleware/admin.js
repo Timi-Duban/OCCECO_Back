@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 /**
- * Middleware that check if the user is an admin
+ * Middleware that check if the account is an admin
  */
 module.exports = (req, res, next) => {
     if(req.headers["authorization"]){
@@ -13,7 +13,7 @@ module.exports = (req, res, next) => {
                     res.status(401).json({error: "Unauthorized" });
                 }
                 else{
-                    if(result && result.userType == "admin"){
+                    if(result && result.accountType == "admin"){
                         next();
                     }else{
                         res.status(401).json({error: "Unauthorized" });

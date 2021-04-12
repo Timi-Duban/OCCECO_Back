@@ -1,4 +1,3 @@
-/* users bcrypt package to has password with salt */
 const bcrypt = require("bcryptjs");
 const saltRounds = 10;
 

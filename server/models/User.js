@@ -1,23 +1,11 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    userMail: {
-        type: String,
-        required: [ true, "Le mail de l'utilisateur est obligatoire" ]
-    },
-
-    userPassword: {
-        type: String,
-        required: [ true, "Le mot de passe est obligatoire" ]
+    accountId:{
+        type: mongoose.ObjectId, ref: "Account",
+        required: [ true, "Vous devez lier un User à un Account" ]
     },
     
-    userType: {
-        type: String,
-        required: true,
-        default: "client",
-        enum:["admin", "partner", "partnerToCheck", "client"]
-    },
-
     userLocalisation: {
         localisationNumber: { type: Number },
         localisationStreet: { type: String },
@@ -47,4 +35,3 @@ const userSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('User', userSchema);
-

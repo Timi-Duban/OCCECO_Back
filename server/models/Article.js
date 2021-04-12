@@ -38,7 +38,7 @@ const articleSchema = new mongoose.Schema({
     }],
 
     articleEditor:{
-        type: mongoose.ObjectId, ref: "User"
+        type: mongoose.ObjectId, ref: "Account"
     },
 
     articleIsValidated: {
