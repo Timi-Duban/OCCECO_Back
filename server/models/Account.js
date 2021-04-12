@@ -8,7 +8,7 @@ const accountSchema = new mongoose.Schema({
 
     accountPassword: {
         type: String,
-        required: [ true, "Le mot de passe est obligatoire" ]
+        required: [ function() {return !this.googleAccountId}, "Le mot de passe est obligatoire" ]
     },
     
     accountType: {
@@ -16,6 +16,10 @@ const accountSchema = new mongoose.Schema({
         required: true,
         default: "client",
         enum:["admin", "partner", "partnerToCheck", "client"]
+    },
+
+    googleAccountId: {
+        type: String
     }
 });
 

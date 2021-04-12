@@ -30,7 +30,7 @@ module.exports = async (req, res) => {
                     accountMail: account.accountMail,
                     accountType: account.accountType
                 };
-                const token = jwt.sign(tokenAccount, process.env.tokenkey, {expiresIn: '200000h'});
+                const token = jwt.sign(tokenAccount, process.env.tokenkey, {expiresIn: '2000h'});
 
                 /* Token created */
                 return res.status(200).json({

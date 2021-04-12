@@ -74,7 +74,7 @@ const updatePassword = async (_id,accountPassword) => {
  */
 const deleteAccount = async (_id) => {
     try{
-        console.log(_id)
+        console.log("deleted account : ",_id)
         return await Account.deleteOne({_id})
     }catch (error) {
         throw error;
