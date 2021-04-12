@@ -57,7 +57,7 @@ const userModel = require('../server/models/user');
         // No password because we don't return it when we search by Id
     });
 
-    it('update password put something and not void', async () => {
+    it('update password really put something and not void', async () => {
         await userController.createUser(basicUser.userMail, basicUser.userPassword, basicUser.userType);
         const createdUser = await userModel.findOne();
         await userController.updatePassword(createdUser._id, "newPassword")

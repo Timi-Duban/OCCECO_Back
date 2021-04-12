@@ -2,7 +2,7 @@ if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 const http = require('http');
 const app = require('./app');
 
-
+// Define the port
 const normalizePort = val => {
     const port = parseInt(val, 10);
     if (isNaN(port)) {

@@ -2,9 +2,10 @@
 const bcrypt = require("bcryptjs");
 const saltRounds = 10;
 
-/* passwordEncryption :
-params :  uncrypted password
-return : encrypted password
+/**
+ * used to encrypt any password, to save it on the database
+ * @param {String} password password in clear
+ * @returns {String} password encrypted
  */
 const passwordEncryption = async(password) => {
     try {
@@ -14,6 +15,11 @@ const passwordEncryption = async(password) => {
     }
 };
 
+/**
+ * Can compare a password and a crypted one and return if it's the same original or not
+ * @param {String} password 
+ * @param {String} hash 
+ */
 const passwordCompare = (password, hash) => {
     if(bcrypt.compareSync(password, hash)) {
         // Passwords match
@@ -24,23 +30,8 @@ const passwordCompare = (password, hash) => {
     }
 };
 
-const validationCode = async (name) =>{
-    const r = Math.floor(Math.random() * Math.floor(1000));
-    const str = name + "memomental" + r.toString();
-    const code = await bcrypt.hash(str, saltRounds);
-    return code.slice(10,16);
-};
-
-const tempPassword = async (mail) =>{
-    const r = Math.floor(Math.random() * Math.floor(1000));
-    const str = mail + "memomental" + r.toString();
-    const pass = await bcrypt.hash(str, saltRounds);
-    return pass.slice(10,16);
-};
 
 module.exports = {
     passwordEncryption,
-    passwordCompare,
-    validationCode,
-    tempPassword
+    passwordCompare
 };

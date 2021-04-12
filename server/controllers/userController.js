@@ -14,6 +14,10 @@ const getUserById = async(_id) => {
     }
 };
 
+/**
+ * @param {String} userMail 
+ * @returns {User} User's infos
+ */
 const getUserByEmail = async(userMail) => {
     try {
         const userMailLowerCased = userMail.toLowerCase()
@@ -23,6 +27,17 @@ const getUserByEmail = async(userMail) => {
     }
 };
 
+/**
+ * @param {String} userMail 
+ * @param {String} userPassword 
+ * @param {String} userType 
+ * @param {any} userLocalisation type location (see user model)
+ * @param {[mongoose.ObjectId]} userArticlesLinked array of article ids
+ * @param {[mongoose.ObjectId]} userCategories array of categories ids
+ * @param {Number} userDistance 
+ * @param {String} userLogoURL 
+ * @returns {User} User's infos
+ */
 const createUser = async (userMail, userPassword, userType, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL) => {
     const hashedPassword = await passwordEncryption.passwordEncryption(userPassword);
     try {
@@ -35,6 +50,11 @@ const createUser = async (userMail, userPassword, userType, userLocalisation, us
     }
 };
 
+/**
+ * @param {mongoose.ObjectId} _id 
+ * @param {String} userPassword 
+ * @returns {User} updated User's infos
+ */
 const updatePassword = async (_id,userPassword) => {
     try {
         const hashedPassword = await passwordEncryption.passwordEncryption(userPassword);
@@ -44,7 +64,10 @@ const updatePassword = async (_id,userPassword) => {
     }
 };
 
-
+/**
+ * @param {mongoose.ObjectId} _id 
+ * @returns {User} deleted User's infos
+ */
 const deleteUser = async (_id) => {
     try{
         console.log(_id)
