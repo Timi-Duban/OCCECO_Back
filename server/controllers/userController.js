@@ -1,7 +1,10 @@
 const User = require('../models/User')
+const Account = require('../models/Account');
+const accountController = require('./accountController');
+
 
 /**
- * @param {[mongoose.ObjectId]} accountId REQUIRED: account linked to the User
+ * @param {[mongoose.ObjectId]} accounts REQUIRED: account linked to the User
  * @param {any} userLocalisation type location (see account model)
  * @param {[mongoose.ObjectId]} userArticlesLinked array of article ids
  * @param {[mongoose.ObjectId]} userCategories array of categories ids
@@ -9,9 +12,9 @@ const User = require('../models/User')
  * @param {String} userLogoURL 
  * @returns {User} User infos
  */
- const createUser = async (accountId, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL) => {
+ const createUser = async (accounts, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL) => {
     try {
-        const user = new User({accountId, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL});
+        const user = new User({accounts, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL});
         return await user.save();
     } catch (error) {
         throw error;
@@ -24,20 +27,25 @@ const User = require('../models/User')
  */
 const getUserById = async(_id) => {
     try {
-        return await (await User.findById(_id)).populate('accountId')
+        return await (await User.findById(_id)).populate('accounts')
     } catch (error) {
         console.log(error)
         throw error;
     }
 };
 
+// TODO: delete this
 /**
- * @param {mongoose.ObjectId} _id id of the account
+ * @param {String} mail one mail linked to the account
  * @returns {User} all User infos
  */
- const getUserByMail = async(accountMail) => {
+ const getUserByMail = async(mail) => {
+    const accountMail = mail.toLowerCase()
     try {
-        return await User.findById(_id)
+        console.log("\n\n\nuserController get email in. ", accountMail);
+        const user = await User.findOne({accounts: {accountMail}})
+        console.log("user found : ", user);
+        return user.populate('accounts')
     } catch (error) {
         console.log(error)
         throw error;
@@ -46,4 +54,5 @@ const getUserById = async(_id) => {
 
 module.exports = {
     createUser,
+    getUserById,
 }

@@ -9,7 +9,7 @@ const userController = require('./userController');
  */
 const getAccountById = async(_id) => {
     try {
-        return await Account.findById(_id).select('-accountPassword')
+        return await Account.findById(_id).select('-accountPassword').populate('user')
     } catch (error) {
         console.log(error)
         throw error;
@@ -23,33 +23,38 @@ const getAccountById = async(_id) => {
 const getAccountByEmail = async(accountMail) => {
     try {
         const accountMailLowerCased = accountMail.toLowerCase()
-        return await Account.findOne({accountMail: accountMailLowerCased});
+        return await Account.findOne({accountMail: accountMailLowerCased}).populate('user');
     } catch(error) {
         throw error;
     }
 };
 
 /**
+ * notice that this return a User
  * @param {String} accountMail 
  * @param {String} accountPassword 
  * @param {String} accountType 
- * @returns {Account} Account infos
+ * @returns {User} User and account infos in user.accounts
  */
+const createAccountAndPopulate = async (accountMail, accountPassword, accountType) => {
+    const account = await createAccount(accountMail, accountPassword, accountType);
+    return getAccountById(account._id)
+};
+
 const createAccount = async (accountMail, accountPassword, accountType) => {
     const hashedPassword = await passwordEncryption.passwordEncryption(accountPassword);
     try {
-        const accountMailLowerCased = accountMail.toLowerCase()
-        const account = new Account({accountMail: accountMailLowerCased, accountPassword: hashedPassword, accountType
-        });
-        await account.save()
+        const user = new User({})
+        await user.save()
         try{
-            const user = new User({accountId: account._id})
-            return await user.save();
+            const accountMailLowerCased = accountMail.toLowerCase()
+            const account = new Account({accountMail: accountMailLowerCased, accountPassword: hashedPassword, user: user._id, accountType});
+            return await account.save()
         } catch (error) {
-            console.log("error while creating user linked to an account");
+            console.log("error while creating account")
         }
     } catch (error) {
-        console.log("error while creating account")
+        console.log("error while creating the user of this account");
         throw error;
     }
 };
@@ -84,6 +89,7 @@ const deleteAccount = async (_id) => {
 module.exports = {
     getAccountById,
     createAccount,
+    createAccountAndPopulate,
     getAccountByEmail,
     updatePassword,
     deleteAccount

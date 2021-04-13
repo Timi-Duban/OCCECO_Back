@@ -1,6 +1,6 @@
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 const express = require('express');
-const cors = require('cors'); // To auth 
+const cors = require('cors'); // To auth
 const bodyParser = require('body-parser'); // Convert old formats
 const mongoose = require('mongoose'); // Access to the database
 const morgan = require('morgan'); // To have clearer responses

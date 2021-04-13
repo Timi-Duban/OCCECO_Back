@@ -36,7 +36,7 @@ const userModel = require('../server/models/user');
         await accountController.createAccount(basicAccount.accountMail, basicAccount.accountPassword, basicAccount.accountType);
         const createdAccount = await accountModel.findOne();
         const createdUser = await userModel.findOne();
-        expect(createdUser.accountId).toStrictEqual(createdAccount._id);
+        expect(createdUser.accounts).toStrictEqual(createdAccount._id);
     });
 });
 

@@ -10,6 +10,11 @@ const accountSchema = new mongoose.Schema({
         type: String,
         required: [ function() {return !this.googleAccountId}, "Le mot de passe est obligatoire" ]
     },
+
+    user: {
+        type: mongoose.ObjectId, ref: "User",
+        required: [ true, "Un account doit être lié à un User" ]
+    },
     
     accountType: {
         type: String,
@@ -20,7 +25,7 @@ const accountSchema = new mongoose.Schema({
 
     googleAccountId: {
         type: String
-    }
+    },
 });
 
 module.exports = mongoose.model('Account', accountSchema);

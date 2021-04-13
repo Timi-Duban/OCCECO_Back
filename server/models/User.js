@@ -1,11 +1,6 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    accountId:{
-        type: mongoose.ObjectId, ref: "Account",
-        required: [ true, "Vous devez lier un User à un Account" ]
-    },
-    
     userLocalisation: {
         localisationNumber: { type: Number },
         localisationStreet: { type: String },
