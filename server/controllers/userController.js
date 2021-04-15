@@ -52,7 +52,26 @@ const getUserById = async(_id) => {
     }
 };
 
+/**
+ * @param {mongoose.ObjectId} _id id user
+ * @param {any} userLocalisation type location (see account model)
+ * @param {[mongoose.ObjectId]} userArticlesLinked array of article ids
+ * @param {[mongoose.ObjectId]} userCategories array of categories ids
+ * @param {Number} userDistance 
+ * @param {String} userLogoURL 
+ * @returns {User} User infos updated
+ */
+const updateUser = async(_id, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL) => {
+    try {
+        return await User.findOneAndUpdate({_id},{userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL},{new:true});
+    } catch (error) {
+        console.log(error)
+        throw error;
+    }
+}
+
 module.exports = {
     createUser,
     getUserById,
+    updateUser
 }
