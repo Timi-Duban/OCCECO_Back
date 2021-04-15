@@ -32,7 +32,7 @@ module.exports = async (req, res, next) => {
                 success: true,
                 message: 'Connected !',
                 token: token,
-                user: account.user
+                account
             });
         }
     }
