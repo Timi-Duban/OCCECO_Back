@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
                     res.status(401).json({error: "Unauthorized" });
                 }
                 else{
-                    req.token = result; /* To access users information in controllers */
+                    req.token = result; /* To access account information in controllers */
                     next();
                 }
             })

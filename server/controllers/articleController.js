@@ -1,4 +1,4 @@
-const Article = require('../models/article');
+const Article = require('../models/Article');
 
 
 const createArticle = async (name, current,exhibitors,gameBookedList,space) => {

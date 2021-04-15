@@ -1,57 +1,58 @@
-const User = require('../models/user');
-const passwordEncryption = require('../encryption/passwordEncryption');
+const User = require('../models/User')
+const Account = require('../models/Account');
+const accountController = require('./accountController');
 
-const getUserById = async(_id) => {
-    try {
-        return await User.findById(_id).select('-userPassword')
-    } catch (error) {
-        console.log(error)
-        throw error;
-    }
-};
 
-const getUserByEmail = async(userMail) => {
+/**
+ * @param {[mongoose.ObjectId]} accounts REQUIRED: account linked to the User
+ * @param {any} userLocalisation type location (see account model)
+ * @param {[mongoose.ObjectId]} userArticlesLinked array of article ids
+ * @param {[mongoose.ObjectId]} userCategories array of categories ids
+ * @param {Number} userDistance 
+ * @param {String} userLogoURL 
+ * @returns {User} User infos
+ */
+ const createUser = async (accounts, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL) => {
     try {
-        return await User.findOne({userMail});
-    } catch(error) {
-        throw error;
-    }
-};
-
-const createUser = async (userMail, userPassword, userType, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL) => {
-    const hashedPassword = await passwordEncryption.passwordEncryption(userPassword);
-    try {
-        const user = new User({userMail, userPassword: hashedPassword, userType, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL
-        });
+        const user = new User({accounts, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL});
         return await user.save();
     } catch (error) {
         throw error;
     }
 };
 
-const updatePassword = async (_id,password) => {
+/**
+ * @param {mongoose.ObjectId} _id 
+ * @returns {User} all User infos
+ */
+const getUserById = async(_id) => {
     try {
-        const hashedPassword = await passwordEncryption.passwordEncryption(password);
-        return await User.findOneAndUpdate({_id},{password:hashedPassword},{new:true});
+        return await (await User.findById(_id)).populate('accounts')
     } catch (error) {
+        console.log(error)
         throw error;
     }
 };
 
-
-const deleteUser = async (_id) => {
-    try{
-        console.log(_id)
-        return await User.deleteOne({_id})
-    }catch (error) {
+// TODO: delete this
+/**
+ * @param {String} mail one mail linked to the account
+ * @returns {User} all User infos
+ */
+ const getUserByMail = async(mail) => {
+    const accountMail = mail.toLowerCase()
+    try {
+        console.log("\n\n\nuserController get email in. ", accountMail);
+        const user = await User.findOne({accounts: {accountMail}})
+        console.log("user found : ", user);
+        return user.populate('accounts')
+    } catch (error) {
+        console.log(error)
         throw error;
     }
 };
 
 module.exports = {
-    getUserById,
     createUser,
-    getUserByEmail,
-    updatePassword,
-    deleteUser
-};
+    getUserById,
+}

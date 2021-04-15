@@ -2,7 +2,6 @@ const moment = require('moment');
 const mongoose = require('mongoose');
 
 const articleSchema = new mongoose.Schema({
-
     articleTitle: {
         type: String,
         required: [ true, "Le nom de l'article est obligatoire" ]
@@ -39,14 +38,13 @@ const articleSchema = new mongoose.Schema({
     }],
 
     articleEditor:{
-        type: mongoose.ObjectId, ref: "User"
+        type: mongoose.ObjectId, ref: "Account"
     },
 
     articleIsValidated: {
         type: Boolean,
         default: false
     }
-
 });
 
 module.exports = mongoose.model('Article', articleSchema);

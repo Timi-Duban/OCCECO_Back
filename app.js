@@ -1,9 +1,9 @@
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 const express = require('express');
-const cors = require('cors'); // To auth 
+const cors = require('cors'); // To auth
 const bodyParser = require('body-parser'); // Convert old formats
 const mongoose = require('mongoose'); // Access to the database
-const morgan = require('morgan'); // To log
+const morgan = require('morgan'); // To have clearer responses
 const app = express();
 
 // Accès à la base de données
@@ -19,15 +19,13 @@ db.on('error', err => {
     console.error('connection error:', err)
 });
 
-app.use(bodyParser.json());
-app.use(morgan('dev'));
+app.use(bodyParser.json()); // Convert old formats
+app.use(morgan('dev')); // Color the status response, dev use
 
-app.use(cors());
-
+app.use(cors()); // To control who can connect, all origins here
 
 // routes publiques, utilisées pour se connecter
 app.use("/api", require('./server/routes/authRoutes'));
-
 
 // routes accessibles par n'importe quel utilisateur connecté
 //app.use("/api", require('./server/middleware/auth'), require('./server/routes/connectedRoutes'));
