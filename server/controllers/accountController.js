@@ -112,6 +112,17 @@ const deleteAccount = async (_id) => {
     }
 };
 
+const getAllAccounts = async() => {
+    try {
+        return await Account.find().populate('user')
+    } catch (error) {
+        console.log(error)
+        throw error;
+    }
+};
+
+
+
 module.exports = {
     getAccountById,
     createAccount,
@@ -120,5 +131,6 @@ module.exports = {
     updatePassword,
     updateMail,
     updateType,
-    deleteAccount
+    deleteAccount,
+    getAllAccounts
 };

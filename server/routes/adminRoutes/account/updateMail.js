@@ -2,8 +2,7 @@ const AccountController = require('../../../controllers/accountController');
 
 module.exports = async (req, res) => {
     try{
-        var informations = {...req.body};
-        const account = await AccountController.updateAccount(informations.accountId, informations);
+        const account = await AccountController.updateMail(req.body.accountId, req.body.accountMail);
         return res.status(200).json(account);
     }
     catch(e){
