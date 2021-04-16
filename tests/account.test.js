@@ -57,12 +57,15 @@ const accountModel = require('../server/models/account');
         // No password because we don't return it when we search by Id
     });
 
-    it('update password really put something and not void', async () => {
+    it('update password really put something else (and not void)', async () => {
         await accountController.createAccount(basicAccount.accountMail, basicAccount.accountPassword, basicAccount.accountType);
-        const createdAccount = await accountModel.findOne();
+        var createdAccount = await accountModel.findOne();
+        const oldPassword = createdAccount.accountPassword;
         await accountController.updatePassword(createdAccount._id, "newPassword")
+        createdAccount = await accountModel.findOne();
         expect(createdAccount.accountMail).toBe(basicAccount.accountMail.toLowerCase());
         expect(createdAccount.accountPassword).toEqual(expect.anything());
+        expect(createdAccount.accountPassword).not.toBe(oldPassword);
         expect(createdAccount.accountType).toBe(basicAccount.accountType);
     });
 
@@ -72,6 +75,26 @@ const accountModel = require('../server/models/account');
         await accountController.deleteAccount(createdAccount._id)
         expect(await accountModel.findOne()).toBe(null)
     });
+
+    it('update put the right modifications', async () => {
+        await accountController.createAccount(basicAccount.accountMail, basicAccount.accountPassword, basicAccount.accountType);
+        var createdAccount = await accountModel.findOne();
+        await accountController.updateAccount(createdAccount._id, modificationsAccount)
+        createdAccount = await accountModel.findOne();
+        expect(createdAccount.accountMail).toBe(modificationsAccount.accountMail.toLowerCase());
+        expect(createdAccount.accountType).toBe(modificationsAccount.accountType);
+    });
+
+    it("update doesn't change the password", async () => {
+        await accountController.createAccount(basicAccount.accountMail, basicAccount.accountPassword, basicAccount.accountType);
+        var createdAccount = await accountModel.findOne();
+        const oldPassword = createdAccount.accountPassword;
+        await accountController.updateAccount(createdAccount._id, modificationsAccount)
+        createdAccount = await accountModel.findOne();
+        expect(createdAccount.accountPassword).toBe(oldPassword);
+    });
+
+
  });
  
  /**
@@ -86,5 +109,11 @@ const accountModel = require('../server/models/account');
  const basicAccount2 = {
     accountMail: "accountMail2@mail.com",
     accountPassword: "accountPassword2Test",
+    accountType: "partner"
+ };
+
+ const modificationsAccount = {
+    accountMail: "mail@mail.com",
+    accountPassword: "passwordTest",
     accountType: "partner"
  };

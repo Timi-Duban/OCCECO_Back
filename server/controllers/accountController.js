@@ -73,8 +73,14 @@ const updatePassword = async (_id,accountPassword) => {
     }
 };
 
+/**
+ * @param {mongoose.ObjectId} accountId 
+ * @param {Account} informations json document with datas you want to change
+ * @returns {Account} updated Account infos
+ */
 const updateAccount = async (accountId, informations) => {
     try{
+        delete informations.accountPassword;
         return await Account.findOneAndUpdate({_id: accountId}, {...informations, _id: accountId}, {new:true})
     }catch (error) {
         throw error;
