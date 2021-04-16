@@ -73,6 +73,14 @@ const updatePassword = async (_id,accountPassword) => {
     }
 };
 
+const updateAccount = async (accountId, informations) => {
+    try{
+        return await Account.findOneAndUpdate({_id: accountId}, {...informations, _id: accountId}, {new:true})
+    }catch (error) {
+        throw error;
+    }
+}; 
+
 /**
  * @param {mongoose.ObjectId} _id 
  * @returns {Account} deleted Account infos
@@ -92,5 +100,6 @@ module.exports = {
     createAccountAndPopulate,
     getAccountByEmail,
     updatePassword,
+    updateAccount,
     deleteAccount
 };

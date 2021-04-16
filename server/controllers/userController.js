@@ -34,24 +34,6 @@ const getUserById = async(_id) => {
     }
 };
 
-// TODO: delete this
-/**
- * @param {String} mail one mail linked to the account
- * @returns {User} all User infos
- */
- const getUserByMail = async(mail) => {
-    const accountMail = mail.toLowerCase()
-    try {
-        console.log("\n\n\nuserController get email in. ", accountMail);
-        const user = await User.findOne({accounts: {accountMail}})
-        console.log("user found : ", user);
-        return user.populate('accounts')
-    } catch (error) {
-        console.log(error)
-        throw error;
-    }
-};
-
 /**
  * @param {mongoose.ObjectId} _id id user
  * @param {any} userLocalisation type location (see account model)
