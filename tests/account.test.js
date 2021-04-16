@@ -76,22 +76,20 @@ const accountModel = require('../server/models/account');
         expect(await accountModel.findOne()).toBe(null)
     });
 
-    it('update put the right modifications', async () => {
+    it("update mail works", async () => {
         await accountController.createAccount(basicAccount.accountMail, basicAccount.accountPassword, basicAccount.accountType);
         var createdAccount = await accountModel.findOne();
-        await accountController.updateAccount(createdAccount._id, modificationsAccount)
+        await accountController.updateMail(createdAccount._id, modificationsAccount.accountMail)
         createdAccount = await accountModel.findOne();
-        expect(createdAccount.accountMail).toBe(modificationsAccount.accountMail.toLowerCase());
-        expect(createdAccount.accountType).toBe(modificationsAccount.accountType);
+        expect(createdAccount.accountMail).toBe(modificationsAccount.accountMail);
     });
 
-    it("update doesn't change the password", async () => {
+    it("update type works", async () => {
         await accountController.createAccount(basicAccount.accountMail, basicAccount.accountPassword, basicAccount.accountType);
         var createdAccount = await accountModel.findOne();
-        const oldPassword = createdAccount.accountPassword;
-        await accountController.updateAccount(createdAccount._id, modificationsAccount)
+        await accountController.updateType(createdAccount._id, modificationsAccount.accountType)
         createdAccount = await accountModel.findOne();
-        expect(createdAccount.accountPassword).toBe(oldPassword);
+        expect(createdAccount.accountType).toBe(modificationsAccount.accountType);
     });
 
 

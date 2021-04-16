@@ -75,13 +75,25 @@ const updatePassword = async (_id,accountPassword) => {
 
 /**
  * @param {mongoose.ObjectId} accountId 
- * @param {Account} informations json document with datas you want to change
+ * @param {String} accountMail
  * @returns {Account} updated Account infos
  */
-const updateAccount = async (accountId, informations) => {
+const updateMail = async (accountId, accountMail) => {
     try{
-        delete informations.accountPassword;
-        return await Account.findOneAndUpdate({_id: accountId}, {...informations, _id: accountId}, {new:true})
+        return await Account.findOneAndUpdate({_id: accountId}, {accountMail}, {new:true})
+    }catch (error) {
+        throw error;
+    }
+};
+
+/**
+ * @param {mongoose.ObjectId} accountId 
+ * @param {String} accountType
+ * @returns {Account} updated Account infos
+ */
+ const updateType = async (accountId, accountType) => {
+    try{
+        return await Account.findOneAndUpdate({_id: accountId}, {accountType}, {new:true})
     }catch (error) {
         throw error;
     }
@@ -106,6 +118,7 @@ module.exports = {
     createAccountAndPopulate,
     getAccountByEmail,
     updatePassword,
-    updateAccount,
+    updateMail,
+    updateType,
     deleteAccount
 };
