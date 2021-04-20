@@ -74,6 +74,32 @@ const updatePassword = async (_id,accountPassword) => {
 };
 
 /**
+ * @param {mongoose.ObjectId} accountId 
+ * @param {String} accountMail
+ * @returns {Account} updated Account infos
+ */
+const updateMail = async (accountId, accountMail) => {
+    try{
+        return await Account.findOneAndUpdate({_id: accountId}, {accountMail}, {new:true})
+    }catch (error) {
+        throw error;
+    }
+};
+
+/**
+ * @param {mongoose.ObjectId} accountId 
+ * @param {String} accountType
+ * @returns {Account} updated Account infos
+ */
+ const updateType = async (accountId, accountType) => {
+    try{
+        return await Account.findOneAndUpdate({_id: accountId}, {accountType}, {new:true})
+    }catch (error) {
+        throw error;
+    }
+}; 
+
+/**
  * @param {mongoose.ObjectId} _id 
  * @returns {Account} deleted Account infos
  */
@@ -86,11 +112,25 @@ const deleteAccount = async (_id) => {
     }
 };
 
+const getAllAccounts = async() => {
+    try {
+        return await Account.find().populate('user')
+    } catch (error) {
+        console.log(error)
+        throw error;
+    }
+};
+
+
+
 module.exports = {
     getAccountById,
     createAccount,
     createAccountAndPopulate,
     getAccountByEmail,
     updatePassword,
-    deleteAccount
+    updateMail,
+    updateType,
+    deleteAccount,
+    getAllAccounts
 };

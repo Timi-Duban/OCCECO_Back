@@ -2,6 +2,7 @@ require('dotenv').config();
 
 // NO USE, NO TEST YET
 module.exports = (req, res, next) => {
+    console.log(req.headers)
     if(req.headers["authorization"]){
         const token = req.headers["authorization"].split(" ")[1];
         if(token){
@@ -17,10 +18,12 @@ module.exports = (req, res, next) => {
             })
         }
         else{
+            console.log('no token')
             res.status(401).json({error: "Unauthenticated : no token" });
         }
     }
     else{
+        console.log("no headers")
         res.status(401).json({error: "Unauthenticated : no headers" });
     }
 };

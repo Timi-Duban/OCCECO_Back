@@ -28,7 +28,7 @@ app.use(cors()); // To control who can connect, all origins here
 app.use("/api", require('./server/routes/authRoutes'));
 
 // routes accessibles par n'importe quel utilisateur connecté
-app.use("/api", require('./server/middleware/auth'), require('./server/routes/connectedRoutes'));
+app.use("/api", /*require('./server/middleware/auth'), */ require('./server/routes/connectedRoutes'));
 
 
 //routes accessibles par les partenaires 
