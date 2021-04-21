@@ -17,7 +17,7 @@ module.exports = async (req, res) => {
         /* Check email */
         const account = await accountController.getAccountByEmail(req.body.accountMail.toLowerCase());
         if (!account){
-            return res.status(400).json({error : "Cet mail n'est pas dans notre base de donnée"});
+            return res.status(400).json({error : "Cet email n'est pas dans notre base de donnée"});
         }
         else {
 

@@ -5,11 +5,11 @@ const userController = require('./userController');
 
 /**
  * @param {mongoose.ObjectId} _id 
- * @returns {Account} Account infos except password
+ * @returns {Account} Account infos
  */
 const getAccountById = async(_id) => {
     try {
-        return await Account.findById(_id).select('-accountPassword').populate('user')
+        return await Account.findById(_id).populate('user')
     } catch (error) {
         console.log(error)
         throw error;
@@ -66,7 +66,8 @@ const createAccount = async (accountMail, accountPassword, accountType) => {
 const updatePassword = async (_id,accountPassword) => {
     try {
         const hashedPassword = await passwordEncryption.passwordEncryption(accountPassword);
-        return await Account.findOneAndUpdate({_id},{accountPassword:hashedPassword},{new:true});
+        const account = await Account.findOneAndUpdate({_id},{accountPassword:hashedPassword},{new:true}).populate('user');
+        return account
     } catch (error) {
         throw error;
     }
@@ -80,7 +81,8 @@ const updatePassword = async (_id,accountPassword) => {
  */
 const updateMail = async (accountId, accountMail) => {
     try{
-        return await Account.findOneAndUpdate({_id: accountId}, {accountMail}, {new:true})
+        const account = await Account.findOneAndUpdate({_id: accountId}, {accountMail}, {new:true}).populate('user');
+        return account
     }catch (error) {
         throw error;
     }
