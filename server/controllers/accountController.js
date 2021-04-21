@@ -30,11 +30,10 @@ const getAccountByEmail = async(accountMail) => {
 };
 
 /**
- * notice that this return a User
  * @param {String} accountMail 
  * @param {String} accountPassword 
  * @param {String} accountType 
- * @returns {User} User and account infos in user.accounts
+ * @returns {User} Account and user infos in account.user
  */
 const createAccountAndPopulate = async (accountMail, accountPassword, accountType) => {
     const account = await createAccount(accountMail, accountPassword, accountType);
@@ -74,6 +73,7 @@ const updatePassword = async (_id,accountPassword) => {
 };
 
 /**
+ * /!\ Vérifier avant d'appeler cette fonction si le mail est disponible ou déjà utilisé
  * @param {mongoose.ObjectId} accountId 
  * @param {String} accountMail
  * @returns {Account} updated Account infos
