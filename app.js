@@ -30,9 +30,8 @@ app.use("/api", require('./server/routes/authRoutes'));
 // routes accessibles par n'importe quel utilisateur connecté
 app.use("/api", require('./server/middleware/auth'),  require('./server/routes/connectedRoutes'));
 
-
-//routes accessibles par les partenaires 
-app.use("/api", require('./server/middleware/partner'), require('./server/routes/partnerRoutes'));
+//routes accessibles par les partenaires et administrateurs
+ app.use("/api", require('./server/middleware/partner'), require('./server/routes/partnerRoutes'));
 
 //routes accessibles par les administrateurs uniquement 
 app.use("/api", require('./server/middleware/admin'), require('./server/routes/adminRoutes'));

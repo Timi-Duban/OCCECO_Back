@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
     }
     catch(e){
         return res.status(500).json({
-            error : "Impossible de update ce user"
+            error : "Impossible d'update cet user"
         });
     }
 };
