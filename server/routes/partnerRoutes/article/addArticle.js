@@ -3,7 +3,8 @@ const ArticleController = require('../../../controllers/articleController');
 module.exports = async (req, res) => {
     try{
         console.log("addArticle route OK")
-        const article = await ArticleController.createArticle(req.body.name); //TODO: mettre les bons arguments
+        console.log(req.body.articleTitle)
+        const article = await ArticleController.createArticle(req.body.articleTitle, req.body.articleLink, req.body.articleDescription)
         return res.status(200).json(article);
     }
     catch(e){
