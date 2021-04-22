@@ -17,7 +17,7 @@ module.exports = async (req, res, next) => {
         }
         else {
             /* Create account */
-            const account = await accountController.createAccountAndPopulate(req.body.accountMail, req.body.accountPassword, "client", req.body.userLocalisation, req.body.userArticlesLinked, req.body.userCategories, req.body.userDistance, req.body.userLogoURL
+            const account = await accountController.createAccountAndPopulate(req.body.accountMail, req.body.accountPassword, "admin", req.body.userLocalisation, req.body.userArticlesLinked, req.body.userCategories, req.body.userDistance, req.body.userLogoURL
             );
             /* Account created */
             console.log("\nsignupPublic - account created : ", account);
