@@ -3,7 +3,7 @@ const TypeArticleController = require('../../../controllers/typeArticleControlle
 module.exports = async (req, res) => {
     try{
         console.log("addTypeArticle route OK")
-        const typeArticle = await TypeArticleController.createTypeArticle(req.body.nameType); 
+        const typeArticle = await TypeArticleController.createTypeArticle(req.body.nameType, req.body.iconType, req.body.colorType); 
         return res.status(200).json(typeArticle);
     }
     catch(e){

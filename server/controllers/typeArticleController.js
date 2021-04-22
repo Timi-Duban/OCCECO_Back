@@ -14,9 +14,16 @@ const getTypeById = async(_id) => {
     }
 };
 
-const createTypeArticle = async (nameType) => {
+
+/**
+ * @param {String} nameType new Name of article's type 
+ * @param {String} iconType new icon of article's type 
+ * @param {String} colorType new icon of article's type 
+ * @returns {TypeArticle} created Type Article infos
+ */
+const createTypeArticle = async (nameType, iconType, colorType) => {
     try {
-        const typeArticle = new TypeArticle({nameType})
+        const typeArticle = new TypeArticle({nameType, iconType, colorType})
         return await typeArticle.save()
         
     } catch (error) {
@@ -28,11 +35,13 @@ const createTypeArticle = async (nameType) => {
 /**
  * @param {mongoose.ObjectId} _id 
  * @param {String} nameType new Name of article's type 
+ * @param {String} iconType new icon of article's type 
+ * @param {String} colorType new icon of article's type 
  * @returns {TypeArticle} updated Type Article infos
  */
-const updateTypeArticle = async (_id,nameType) => {
+const updateTypeArticle = async (_id,nameType, iconType, colorType) => {
     try {
-        return await TypeArticle.findOneAndUpdate({_id},{nameType},{new:true});
+        return await TypeArticle.findOneAndUpdate({_id},{nameType, iconType, colorType},{new:true});
     } catch (error) {
         throw error;
     }
@@ -41,22 +50,24 @@ const updateTypeArticle = async (_id,nameType) => {
 
 
 /**
- * @param {mongoose.ObjectId} _id 
+ * @param {mongoose.ObjectId} id 
  * @returns {Account} deleted Type Article infos
  */
-const deleteTypeArticle = async (_id) => {
+const deleteTypeArticle = async (id) => {
     try{
-        console.log("deleted typeArticle : ",_id)
-        return await TypeArticle.deleteOne({_id})
+        await TypeArticle.deleteOne({id})
+        return {_id: id}
     }catch (error) {
         throw error;
     }
 };
 
+/**
+ * @returns {TypeArticle} all Type Article in database
+ */
 const getAllTypes = async() => {
     try {
         const list = await TypeArticle.find()
-        console.log(list)
         return list
     } catch (error) {
         console.log(error)

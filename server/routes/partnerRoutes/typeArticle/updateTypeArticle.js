@@ -3,7 +3,7 @@ const TypeArticleController = require('../../../controllers/typeArticleControlle
 module.exports = async (req, res) => {
     try{
         console.log("updateTypeArticle route OK")
-        const typeArticle = await TypeArticleController.updateTypeArticle(req.body.nameType); 
+        const typeArticle = await TypeArticleController.updateTypeArticle(req.body._id, req.body.nameType, req.body.iconType, req.body.colorType); 
         return res.status(200).json(typeArticle);
     }
     catch(e){

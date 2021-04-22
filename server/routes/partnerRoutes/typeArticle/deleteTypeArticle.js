@@ -2,8 +2,8 @@ const TypeArticleController = require('../../../controllers/typeArticleControlle
 
 module.exports = async (req, res) => {
     try{
-        console.log("deleteTypeArticle route OK")
-        const typeArticle = await TypeArticleController.deleteTypeArticle(req.body._id); 
+        console.log("deleteTypeArticle route OK", req.body.id)
+        const typeArticle = await TypeArticleController.deleteTypeArticle(req.body.id); 
         return res.status(200).json(typeArticle);
     }
     catch(e){
