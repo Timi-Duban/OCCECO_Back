@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const dbHandler = require('./db-handler');
 const accountController = require('../server/controllers/accountController');
-const accountModel = require('../server/models/account');
+const accountModel = require('../server/models/Account');
 
 // Global settings
 /**
@@ -54,7 +54,7 @@ const accountModel = require('../server/models/account');
         const searchedAccount = await accountController.getAccountById(createdAccount._id)
         expect(searchedAccount.accountMail).toBe(basicAccount.accountMail.toLowerCase());
         expect(searchedAccount.accountType).toBe(basicAccount.accountType);
-        // No password because we don't return it when we search by Id
+        expect(searchedAccount.accountPassword).toEqual(expect.anything());
     });
 
     it('update password really put something else (and not void)', async () => {
