@@ -2,10 +2,8 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
     userLocalisation: {
-        localisationNumber: { type: Number },
-        localisationStreet: { type: String },
-        localisationPostalCode: { type: Number },
-        localisationCity: { type: String }
+        lat: {type: Number},
+        lng: {type: Number}
     },
 
     userArticlesLinked: {
