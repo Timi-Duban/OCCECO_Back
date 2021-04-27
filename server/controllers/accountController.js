@@ -9,7 +9,9 @@ const userController = require('./userController');
  */
 const getAccountById = async(_id) => {
     try {
-        return await Account.findById(_id).populate('user')
+        return await Account.findById(_id).populate({
+            path : 'user', populate:{path:'userCategories'}
+        });
     } catch (error) {
         console.log(error)
         throw error;
@@ -23,7 +25,9 @@ const getAccountById = async(_id) => {
 const getAccountByEmail = async(accountMail) => {
     try {
         const accountMailLowerCased = accountMail.toLowerCase()
-        return await Account.findOne({accountMail: accountMailLowerCased}).populate('user');
+        return await Account.findOne({accountMail: accountMailLowerCased}).populate({
+            path : 'user', populate:{path:'userCategories'}
+        });
     } catch(error) {
         throw error;
     }
@@ -66,7 +70,9 @@ const createAccount = async (accountMail, accountPassword, accountType) => {
 const updatePassword = async (_id,accountPassword) => {
     try {
         const hashedPassword = await passwordEncryption.passwordEncryption(accountPassword);
-        const account = await Account.findOneAndUpdate({_id},{accountPassword:hashedPassword},{new:true}).populate('user');
+        const account = (await Account.findOneAndUpdate({_id},{accountPassword:hashedPassword},{new:true})).populate({
+            path : 'user', populate:{path:'userCategories'}
+        });
         return account
     } catch (error) {
         throw error;
@@ -81,7 +87,9 @@ const updatePassword = async (_id,accountPassword) => {
  */
 const updateMail = async (accountId, accountMail) => {
     try{
-        const account = await Account.findOneAndUpdate({_id: accountId}, {accountMail}, {new:true}).populate('user');
+        const account = (await Account.findOneAndUpdate({_id: accountId}, {accountMail}, {new:true})).populate({
+            path : 'user', populate:{path:'userCategories'}
+        });
         return account
     }catch (error) {
         throw error;
@@ -95,7 +103,9 @@ const updateMail = async (accountId, accountMail) => {
  */
  const updateType = async (accountId, accountType) => {
     try{
-        return await Account.findOneAndUpdate({_id: accountId}, {accountType}, {new:true})
+        return (await Account.findOneAndUpdate({_id: accountId}, {accountType}, {new:true})).populate({
+            path : 'user', populate:{path:'userCategories'}
+        });
     }catch (error) {
         throw error;
     }
@@ -116,7 +126,9 @@ const deleteAccount = async (_id) => {
 
 const getAllAccounts = async() => {
     try {
-        return await Account.find().populate('user')
+        return await Account.find().populate({
+            path : 'user', populate:{path:'userCategories'}
+        });
     } catch (error) {
         console.log(error)
         throw error;

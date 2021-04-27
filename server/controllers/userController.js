@@ -15,7 +15,7 @@ const accountController = require('./accountController');
  const createUser = async (accounts, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL) => {
     try {
         const user = new User({accounts, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL});
-        return await user.save();
+        return (await user.save()).populate('userCategories');
     } catch (error) {
         throw error;
     }
@@ -27,7 +27,7 @@ const accountController = require('./accountController');
  */
 const getUserById = async(_id) => {
     try {
-        return await (await User.findById(_id)).populate('accounts')
+        return await (await User.findById(_id)).populate('userCategories')
     } catch (error) {
         console.log(error)
         throw error;
@@ -45,7 +45,7 @@ const getUserById = async(_id) => {
  */
 const updateUser = async(_id, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL) => {
     try {
-        return await User.findOneAndUpdate({_id},{userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL},{new:true});
+        return (await User.findOneAndUpdate({_id},{userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL},{new:true})).populate('userCategories');
     } catch (error) {
         console.log(error)
         throw error;
