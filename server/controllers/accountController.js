@@ -24,7 +24,8 @@ const getAccountById = async(_id) => {
  */
 const getAccountByEmail = async(accountMail) => {
     try {
-        const accountMailLowerCased = accountMail.toLowerCase()
+        const mailWithoutWhiteSpaces = String(accountMail).trim();
+        const accountMailLowerCased = mailWithoutWhiteSpaces.toLowerCase();
         return await Account.findOne({accountMail: accountMailLowerCased}).populate({
             path : 'user', populate:{path:'userCategories'}
         });
