@@ -17,10 +17,15 @@ const createArticle = async (articleTitle, articleLink,articleDescription) => {
     return
 };
 
-const deleteArticle = async () => {
-    console.log("articleController: deleteArticle OK")
-    return
-}
+const deleteArticle = async (id) => {
+    try{
+        console.log("je suis bien rentré");
+        await Article.deleteOne({_id:id})
+        return {_id: id}
+    }catch (error) {
+        throw error;
+    }
+};
 
 const getAllArticles = async() => {
     try {
@@ -33,7 +38,17 @@ const getAllArticles = async() => {
     }
 }
 
+const updateArticle = async (_id,articleTitle, articleLink,articleDescription) => {
+    try {
+        return await Article.findOneAndUpdate({_id},{articleTitle, articleLink,articleDescription, articleStartDate: new Date()},{new:true});
+    } catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
     createArticle,
-    getAllArticles
+    getAllArticles,
+    deleteArticle,
+    updateArticle,
 }

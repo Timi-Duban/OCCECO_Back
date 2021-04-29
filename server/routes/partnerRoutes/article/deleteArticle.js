@@ -3,7 +3,7 @@ const ArticleController = require('../../../controllers/articleController');
 module.exports = async (req, res) => {
     try{
         console.log("deleteArticle route OK")
-        const article =  await ArticleController.deleteArticle(req.body.articleId);
+        const article =  await ArticleController.deleteArticle(req.body._id);
         return res.status(200).json(article);
     }
     catch(e){
