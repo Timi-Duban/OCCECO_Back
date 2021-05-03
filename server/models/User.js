@@ -2,24 +2,28 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
     userLocalisation: {
-        lat: {type: Number},
-        lng: {type: Number}
+        lat: { type: Number },
+        lng: { type: Number }
     },
 
     userArticlesLinked: {
         type: [{
-            articleId : {type: mongoose.ObjectId, ref: 'Article' },
-            isOpen : { type: Boolean },
+            articleId: { type: mongoose.ObjectId, ref: 'Article' },
+            isOpen: { type: Boolean },
         }],
     },
 
     userCategories: {
-        type: [{type: mongoose.ObjectId, ref: 'TypeArticle' }],
+        type: [{ type: mongoose.ObjectId, ref: 'TypeArticle' }],
     },
 
     userDistance: {
         type: Number,
         default: 100,
+    },
+
+    userPushTokens: {
+        type: [String],
     },
 
     userLogoURL: {

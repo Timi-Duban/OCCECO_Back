@@ -43,11 +43,10 @@ const getUserById = async(_id) => {
  * @param {Number} userDistance 
  * @param {String} userLogoURL 
  * @returns {User} User infos updated
- * /!\ ATTENTION, ne pas appeler avec des attributs à null autre que userLogoURL 
  */
-const updateUser = async(_id, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL) => {
+const updateUser = async(_id, userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL) => {
     try {
-        return (await User.findOneAndUpdate({_id},{userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL},{new:true})).populate('userCategories');
+        return (await User.findOneAndUpdate({_id},{userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL},{new:true})).populate('userCategories');
     } catch (error) {
         console.log(error)
         throw error;
