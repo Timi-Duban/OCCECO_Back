@@ -7,23 +7,24 @@ const accountModel = require('../server/models/Account');
 /**
  * Connect to a new in-memory database before running any tests.
  */
- beforeAll(async () => await dbHandler.connect());
+beforeAll(async () => await dbHandler.connect());
 
- /**
-  * Clear all test data after every test.
-  */
- afterEach(async () => await dbHandler.clearDatabase());
 
- /**
-  * Remove and close the db and server.
-  */
- afterAll(async () => await dbHandler.closeDatabase());
- 
+/**
+ * Clear all test data after every test.
+ */
+afterEach(async () => await dbHandler.clearDatabase());
 
- /**
-  * Account CRUD test suite.
-  */
- describe('account CRUD', () => {
+/**
+ * Remove and close the db and server.
+ */
+afterAll(async () => await dbHandler.closeDatabase());
+
+
+/**
+ * Account CRUD test suite.
+ */
+describe('account CRUD', () => {
     it('can be created', async () => {
         expect(async () => {
             await accountController.createAccount(basicAccount.accountMail, basicAccount.accountPassword, basicAccount.accountType);

@@ -1,4 +1,5 @@
 const User = require('../models/User')
+const TypeArticle = require('../models/TypeArticle'); //to populate user categories
 const Account = require('../models/Account');
 const accountController = require('./accountController');
 
@@ -12,9 +13,9 @@ const accountController = require('./accountController');
  * @param {String} userLogoURL 
  * @returns {User} User infos
  */
- const createUser = async (accounts, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL) => {
+ const createUser = async (userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL) => {
     try {
-        const user = new User({accounts, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL});
+        const user = new User({userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL});
         return (await user.save()).populate('userCategories');
     } catch (error) {
         throw error;
@@ -42,6 +43,7 @@ const getUserById = async(_id) => {
  * @param {Number} userDistance 
  * @param {String} userLogoURL 
  * @returns {User} User infos updated
+ * /!\ ATTENTION, ne pas appeler avec des attributs à null autre que userLogoURL 
  */
 const updateUser = async(_id, userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL) => {
     try {
