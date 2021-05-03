@@ -29,6 +29,7 @@ const deleteArticle = async (id) => {
 
 const getAllArticles = async() => {
     try {
+        console.log("par ici je suis")
         const list = await Article.find()
         console.log(list)
         return list
@@ -39,6 +40,7 @@ const getAllArticles = async() => {
 }
 
 const updateArticle = async (_id,articleTitle, articleLink,articleDescription) => {
+    console.log("je suis bien rentré dans le update");
     try {
         return await Article.findOneAndUpdate({_id},{articleTitle, articleLink,articleDescription, articleStartDate: new Date()},{new:true});
     } catch (error) {
