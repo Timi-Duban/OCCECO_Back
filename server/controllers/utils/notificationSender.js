@@ -3,7 +3,6 @@ const UserController = require('../userController')
 const ArticleController = require('../articleController');
 
 const sendDailyNotifications = async () => {
-    console.log("\n\n\n");
     // Create a new Expo SDK client
     // optionally providing an access token if you have enabled push security
     let expo = new Expo(/*{ accessToken: process.env.EXPO_ACCESS_TOKEN }*/);
@@ -37,7 +36,6 @@ const sendDailyNotifications = async () => {
                     to: pushToken,
                     title: oneNotification.articleTitle,
                     ttl: 80000, // notification is sent up to 24h after the sending date if not delivered yet
-                    // sound: 'default', // delete to have no sound (iOS Only)
                     // pritority: 'normal', // | 'high', to test
                     body: 'This is a test notification',
                     data: { withSome: 'data' },
@@ -126,7 +124,7 @@ const sendDailyNotifications = async () => {
             for (let chunk of receiptIdChunks) {
                 try {
                     let receipts = await expo.getPushNotificationReceiptsAsync(chunk);
-                    console.log(" notificationSender - receipts ", receipts);
+                    console.log("notificationSender - receipts ", receipts);
 
                     // The receipts specify whether Apple or Google successfully received the
                     // notification and information about an error, if one occurred.
@@ -137,7 +135,7 @@ const sendDailyNotifications = async () => {
                             continue;
                         } else if (status === 'error') {
                             console.error(
-                                `There was an error sending a notification: ${message}`
+                                'There was an error sending a notification: ${message}'
                             );
                             if (details && details.error) {
                                 // The error codes are listed in the Expo documentation:
