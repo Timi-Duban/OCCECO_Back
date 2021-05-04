@@ -41,9 +41,9 @@ const articleSchema = new mongoose.Schema({
         type: mongoose.ObjectId, ref: "Account"
     },
 
-    articleIsValidated: {
+    isArticleValidated: {
         type: Boolean,
-        default: false
+        default: true
     }
 });
 
