@@ -2,7 +2,6 @@ const Account = require('../models/Account');
 const User = require('../models/User');
 const TypeArticle = require('../models/TypeArticle'); //to populate user categories
 const passwordEncryption = require('../encryption/passwordEncryption');
-const userController = require('./userController');
 
 /**
  * @param {mongoose.ObjectId} _id 
