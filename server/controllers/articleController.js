@@ -1,10 +1,10 @@
 const Article = require('../models/Article');
 
-const createArticle = async (articleTitle, articleLink,articleDescription) => {
+const createArticle = async (articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate) => {
     console.log(articleTitle)
     try {
         const article = new Article({
-            articleTitle, articleLink,articleDescription, articleStartDate: new Date()
+            articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate
         });
         console.log(article);
         return await article.save();

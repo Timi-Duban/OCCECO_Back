@@ -4,7 +4,7 @@ module.exports = async (req, res) => {
     try{
         console.log("addArticle route OK")
         console.log(req.body.articleTitle)
-        const article = await ArticleController.createArticle(req.body.articleTitle, req.body.articleLink, req.body.articleDescription)
+        const article = await ArticleController.createArticle(req.body.articleTitle, req.body.articleLink, req.body.articleDescription, req.body.articleStartDate, req.body.articleEndDate)
         return res.status(200).json(article);
     }
     catch(e){
