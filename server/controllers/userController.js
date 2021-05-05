@@ -13,9 +13,9 @@ const accountController = require('./accountController');
  * @param {String} userLogoURL 
  * @returns {User} User infos
  */
- const createUser = async (userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL) => {
+const createUser = async (userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL) => {
     try {
-        const user = new User({userLocalisation, userArticlesLinked, userCategories, userDistance, userLogoURL});
+        const user = new User({ userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL });
         return (await user.save()).populate('userCategories');
     } catch (error) {
         throw error;
@@ -26,7 +26,7 @@ const accountController = require('./accountController');
  * @param {mongoose.ObjectId} _id 
  * @returns {User} all User infos
  */
-const getUserById = async(_id) => {
+const getUserById = async (_id) => {
     try {
         return await (await User.findById(_id)).populate('userCategories')
     } catch (error) {
@@ -44,17 +44,75 @@ const getUserById = async(_id) => {
  * @param {String} userLogoURL 
  * @returns {User} User infos updated
  */
-const updateUser = async(_id, userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL) => {
+const updateUser = async (_id, userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL) => {
     try {
-        return (await User.findOneAndUpdate({_id},{userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL},{new:true})).populate('userCategories');
+        return (await User.findOneAndUpdate({ _id }, { userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL }, { new: true })).populate('userCategories');
     } catch (error) {
         console.log(error)
         throw error;
     }
 }
 
-module.exports = {
-    createUser,
-    getUserById,
-    updateUser
+/**
+ * Add the token in the user if it isn't already
+ * @param {mongoose.ObjectId} _id id user
+ * @param {String} userPushToken The token given by  
+ * @returns the User after it was modified
+ */
+const addUserPushToken = async (_id, userPushToken) => {
+    try {
+        return (await User.findOneAndUpdate({ _id }, { $addToSet : {userPushTokens : userPushToken} }, { new: true })).populate('userCategories');
+    } catch (error) {
+        console.log(error)
+        throw error;
+    }
 }
+
+/**
+ * Warning: doesn't tell if a token was deleted or not 
+ * @param {mongoose.ObjectId} _id id user
+ * @param {String} userPushToken The token given by expo
+ * @returns the User after it was modified, without the token if it existed
+ */
+const deleteUserPushTokenById = async (_id, userPushToken) => {
+    console.log(" >>> deleteUserPushTokenById", _id, userPushToken);
+    try {
+        return (await User.findOneAndUpdate({ _id }, { $pull : {userPushTokens : userPushToken} }, { new: true }));
+    } catch (error) {
+        console.log(error)
+        throw error;
+    }
+}
+
+/**
+ * If you know the user's Id, use deleteUserPushTokenById instead
+ * @param {String} userPushToken The token given by expo
+ * @returns null or the User after it was modified
+ */
+const deleteUserPushToken = async (userPushToken) => {
+    console.log(" >>> deleteUserPushToken ", userPushToken);
+    try {
+        userModified = await User.findOneAndUpdate({userPushTokens: userPushToken}, { $pull : {userPushTokens : userPushToken} }, { new: true });
+        if (!userModified) {
+            console.error("deleteUserPushToken - NO USER FOUND WITH THIS TOKEN ", userPushToken);
+        }
+        return (userModified);
+    } catch (error) {
+        console.log(error)
+        throw error;
+    }
+}
+
+const getUsersByFilters = async ( categories, location ) => {
+    return await User.find();
+}
+
+    module.exports = {
+        createUser,
+        getUserById,
+        updateUser,
+        addUserPushToken,
+        deleteUserPushTokenById,
+        deleteUserPushToken,
+        getUsersByFilters
+    }

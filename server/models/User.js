@@ -24,6 +24,7 @@ const userSchema = new mongoose.Schema({
 
     userPushTokens: {
         type: [String],
+        default: [],
     },
 
     userLogoURL: {

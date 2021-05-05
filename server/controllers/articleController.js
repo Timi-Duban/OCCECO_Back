@@ -45,9 +45,14 @@ const updateArticle = async (_id, articleTitle, articleLink,articleDescription, 
     }
 };
 
+const getDailyArticles = async () => {
+    return await Article.find()
+}
+
 module.exports = {
     createArticle,
     getAllArticles,
     deleteArticle,
     updateArticle,
+    getDailyArticles
 }
