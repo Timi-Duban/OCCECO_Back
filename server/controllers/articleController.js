@@ -1,25 +1,24 @@
 const Article = require('../models/Article');
 
-const createArticle = async (articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate) => {
-    console.log(articleTitle)
+const createArticle = async (articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate, articleCategories) => {
+    console.log("articleController: createArticle OK")
     try {
         const article = new Article({
-            articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate
+            articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate, articleCategories
         });
         console.log(article);
-        return await article.save();
+        return (await article.save()).populate('articleCategories');
     } catch (error) {
         console.log(error);
         throw error;
     }
     
-    console.log("articleController: createArticle OK")
+    
     return
 };
 
 const deleteArticle = async (id) => {
     try{
-        console.log("je suis bien rentré");
         await Article.deleteOne({_id:id})
         return {_id: id}
     }catch (error) {
@@ -29,9 +28,7 @@ const deleteArticle = async (id) => {
 
 const getAllArticles = async() => {
     try {
-        console.log("par ici je suis")
-        const list = await Article.find()
-        console.log(list)
+        const list = await Article.find().populate('articleCategories')
         return list
     } catch (error) {
         console.log(error)
@@ -39,10 +36,10 @@ const getAllArticles = async() => {
     }
 }
 
-const updateArticle = async (_id,articleTitle, articleLink,articleDescription) => {
-    console.log("je suis bien rentré dans le update");
+const updateArticle = async (_id, articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate, articleCategories) => {
+    
     try {
-        return await Article.findOneAndUpdate({_id},{articleTitle, articleLink,articleDescription, articleStartDate: new Date()},{new:true});
+        return (await Article.findOneAndUpdate({_id},{ articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate, articleCategories},{new:true})).populate('articleCategories');
     } catch (error) {
         throw error;
     }

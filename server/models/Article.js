@@ -27,10 +27,8 @@ const articleSchema = new mongoose.Schema({
     },
 
     articleLocalisation: {
-        localisationNumber: { type: Number },
-        localisationStreet: { type: String },
-        localisationPostalCode: { type: Number },
-        localisationCity: { type: String }
+        lat: { type: Number },
+        lng: { type: Number }
     },
 
     articleCategories: [{
