@@ -25,7 +25,14 @@ const articleSchema = new mongoose.Schema({
     articleEndDate: {
         type: Date,
     },
+    articleDateEvent: {
+        type: Date
+    },
 
+    isEvent: {
+        type: Boolean,
+        default: false
+    },
     articleLocalisation: {
         localisationNumber: { type: Number },
         localisationStreet: { type: String },

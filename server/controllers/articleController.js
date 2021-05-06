@@ -1,10 +1,10 @@
 const Article = require('../models/Article');
 
-const createArticle = async (articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate) => {
+const createArticle = async (articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate, articleCategories, articleDateEvent, isEvent) => {
     console.log(articleTitle)
     try {
         const article = new Article({
-            articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate
+            articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate, articleCategories, articleDateEvent, isEvent
         });
         console.log(article);
         return await article.save();
@@ -39,10 +39,10 @@ const getAllArticles = async() => {
     }
 }
 
-const updateArticle = async (_id,articleTitle, articleLink,articleDescription) => {
+const updateArticle = async (_id,articleTitle, articleLink, articleDescription, articleStartDate, articleEndDate, articleCategories, articleDateEvent, isEvent) => {
     console.log("je suis bien rentré dans le update");
     try {
-        return await Article.findOneAndUpdate({_id},{articleTitle, articleLink,articleDescription, articleStartDate: new Date()},{new:true});
+        return await Article.findOneAndUpdate({_id},{articleTitle, articleLink, articleDescription, articleStartDate, articleEndDate, articleCategories, articleDateEvent, isEvent},{new:true});
     } catch (error) {
         throw error;
     }

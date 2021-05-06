@@ -4,7 +4,7 @@ module.exports = async (req, res) => {
     try{
         console.log("update Article route OK")
         console.log(req.body._id)
-        const article = await ArticleController.updateArticle(req.body._id, req.body.articleTitle, req.body.articleLink, req.body.articleDescription)
+        const article = await ArticleController.updateArticle(req.body._id, req.body.articleTitle, req.body.articleLink, req.body.articleDescription, req.body.articleStartDate, req.body.articleEndDate, req.body.articleCategories, req.body.articleDateEvent, req.body.isEvent)
         console.log("Apres controler avec google")
         console.log(article._id)
         console.log("controler")
