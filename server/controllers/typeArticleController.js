@@ -51,12 +51,13 @@ const updateTypeArticle = async (_id,nameType, iconType, colorType) => {
 
 /**
  * @param {mongoose.ObjectId} id 
- * @returns {Account} deleted Type Article infos
+ * @returns {_id} deleted Type Article infos
  */
 const deleteTypeArticle = async (_id) => {
     try{
         console.log("deleted typeArticle : ", _id)
-        return await TypeArticle.deleteOne({_id});
+        await TypeArticle.deleteOne({_id});
+        return {_id}
     }catch (error) {
         throw error;
     }

@@ -1,25 +1,32 @@
 const Article = require('../models/Article');
 
+<<<<<<< HEAD
 const createArticle = async (articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate, articleCategories, articleDateEvent, isEvent) => {
     console.log(articleTitle)
     try {
         const article = new Article({
             articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate, articleCategories, articleDateEvent, isEvent
+=======
+const createArticle = async (articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate, articleCategories) => {
+    console.log("articleController: createArticle OK")
+    try {
+        const article = new Article({
+            articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate, articleCategories
+>>>>>>> 5c60dde831a44250f947139f0c5f69929ab7d180
         });
         console.log(article);
-        return await article.save();
+        return (await article.save()).populate('articleCategories');
     } catch (error) {
         console.log(error);
         throw error;
     }
     
-    console.log("articleController: createArticle OK")
+    
     return
 };
 
 const deleteArticle = async (id) => {
     try{
-        console.log("je suis bien rentré");
         await Article.deleteOne({_id:id})
         return {_id: id}
     }catch (error) {
@@ -29,9 +36,7 @@ const deleteArticle = async (id) => {
 
 const getAllArticles = async() => {
     try {
-        console.log("par ici je suis")
-        const list = await Article.find()
-        console.log(list)
+        const list = await Article.find().populate('articleCategories')
         return list
     } catch (error) {
         console.log(error)
@@ -39,18 +44,30 @@ const getAllArticles = async() => {
     }
 }
 
+<<<<<<< HEAD
 const updateArticle = async (_id,articleTitle, articleLink, articleDescription, articleStartDate, articleEndDate, articleCategories, articleDateEvent, isEvent) => {
     console.log("je suis bien rentré dans le update");
     try {
         return await Article.findOneAndUpdate({_id},{articleTitle, articleLink, articleDescription, articleStartDate, articleEndDate, articleCategories, articleDateEvent, isEvent},{new:true});
+=======
+const updateArticle = async (_id, articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate, articleCategories) => {
+    
+    try {
+        return (await Article.findOneAndUpdate({_id},{ articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate, articleCategories},{new:true})).populate('articleCategories');
+>>>>>>> 5c60dde831a44250f947139f0c5f69929ab7d180
     } catch (error) {
         throw error;
     }
 };
+
+const getDailyArticles = async () => {
+    return await Article.find()
+}
 
 module.exports = {
     createArticle,
     getAllArticles,
     deleteArticle,
     updateArticle,
+    getDailyArticles
 }

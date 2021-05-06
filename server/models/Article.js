@@ -34,10 +34,8 @@ const articleSchema = new mongoose.Schema({
         default: false
     },
     articleLocalisation: {
-        localisationNumber: { type: Number },
-        localisationStreet: { type: String },
-        localisationPostalCode: { type: Number },
-        localisationCity: { type: String }
+        lat: { type: Number },
+        lng: { type: Number }
     },
 
     articleCategories: [{
@@ -48,9 +46,9 @@ const articleSchema = new mongoose.Schema({
         type: mongoose.ObjectId, ref: "Account"
     },
 
-    articleIsValidated: {
+    isArticleValidated: {
         type: Boolean,
-        default: false
+        default: true
     }
 });
 

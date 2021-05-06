@@ -1,4 +1,4 @@
-const UserController = require('../../controllers/userController');
+const UserController = require('../../../controllers/userController');
 
 module.exports = async (req, res) => {
     /* Check inputs */

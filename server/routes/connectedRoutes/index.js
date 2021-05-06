@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-router.patch('/updateUser', require("./updateUser"));
-router.use('/account', require("./account"))
+router.use('/account', require("./account"));
+router.use('/user', require("./user"));
 
 
 module.exports =  router;
