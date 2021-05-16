@@ -46,7 +46,7 @@ const updateArticle = async (_id,articleTitle, articleLink, articleDescription, 
 };
 
 const getDailyArticles = async () => {
-    return await Article.find()
+    return await Article.find().populate('articleCategories')
 }
 
 module.exports = {

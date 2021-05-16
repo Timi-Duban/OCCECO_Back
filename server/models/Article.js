@@ -1,5 +1,6 @@
 const moment = require('moment');
 const mongoose = require('mongoose');
+const User = require('./User');
 
 const articleSchema = new mongoose.Schema({
     articleTitle: {
@@ -19,7 +20,7 @@ const articleSchema = new mongoose.Schema({
     articleStartDate: {
         type: Date,
         required: [ true, "La date de début de l'article est obligatoire" ],
-        default: moment(), // Par défaut initialise à la date d'aujourd'hui
+        default: moment().set({'hour':8, 'minute':00}), // Par défaut initialise à la date d'aujourd'hui
     },
 
     articleEndDate: {
@@ -52,5 +53,42 @@ const articleSchema = new mongoose.Schema({
     }
 });
 
+articleSchema.post('save', function(doc, next) {
+    User
+    .find({userCategories: {$in : doc.articleCategories }})
+    .then(users => {
+        console.log(users)
+        users.forEach(user => {
+            user.userArticlesLinked.push({articleId: doc._id, isOpen: false})
+            user.save()
+        })
+    })
+    
+    next();
+});
+articleSchema.post('findOneAndUpdate', function(doc, next) {
+    User
+    .find({userCategories: {$in : doc.articleCategories }})
+    .then(users => {
+        console.log(users)
+        users.forEach(user => {
+            if (!user.userArticlesLinked.includes(a => a.articleId === doc._id)){
+                user.userArticlesLinked.push({articleId: doc._id, isOpen: false})
+            }
+            else {
+                user.userArticlesLinked = user.userArticlesLinked.map(a => {
+                    if (a.articleId === doc._id){
+                        a.isOpen = false;
+                    }
+                    return a 
+                })
+            }
+            
+            user.save()
+        })
+    })
+    
+    next();
+});
 module.exports = mongoose.model('Article', articleSchema);
 
