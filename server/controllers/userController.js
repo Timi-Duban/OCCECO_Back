@@ -2,7 +2,7 @@ const User = require('../models/User')
 const TypeArticle = require('../models/TypeArticle'); //to populate user categories
 const Account = require('../models/Account');
 const accountController = require('./accountController');
-
+const Article = require('../models/Article');
 
 /**
  * @param {[mongoose.ObjectId]} accounts REQUIRED: account linked to the User
@@ -16,7 +16,8 @@ const accountController = require('./accountController');
 const createUser = async (userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL) => {
     try {
         const user = new User({ userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL });
-        return (await user.save()).populate('userCategories');
+        //return (await user.save()).populate('userCategories');
+        return linkUserWithArticle(user);
     } catch (error) {
         throw error;
     }
@@ -46,7 +47,10 @@ const getUserById = async (_id) => {
  */
 const updateUser = async (_id, userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL) => {
     try {
-        return (await User.findOneAndUpdate({ _id }, { userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL }, { new: true })).populate('userCategories');
+        const userUpdated =  await User.findOneAndUpdate({ _id }, { userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL }, { new: true }).populate('userCategories');
+        const user =  await linkUserWithArticle(userUpdated);
+        console.log("in update =", user)
+        return user
     } catch (error) {
         console.log(error)
         throw error;
@@ -105,6 +109,18 @@ const deleteUserPushToken = async (userPushToken) => {
 
 const getUsersByFilters = async ( categories, location ) => {
     return await User.find();
+}
+
+const linkUserWithArticle = async (user) => {
+    await Article
+    .find({articleCategories: {$in : user.userCategories.map(c => c._id) }}, async function (err, docs) {
+        if (err){
+            console.log("err = ", err)
+        }
+        user.userArticlesLinked = docs.map(a => ({articleId: a._id, isOpen: false}))
+        return await user.save()
+    });
+    
 }
 
     module.exports = {

@@ -2,6 +2,7 @@ const Account = require('../models/Account');
 const User = require('../models/User');
 const TypeArticle = require('../models/TypeArticle'); //to populate user categories
 const passwordEncryption = require('../encryption/passwordEncryption');
+const createUser = require('./userController');
 
 /**
  * @param {mongoose.ObjectId} _id 
@@ -38,19 +39,25 @@ const getAccountByEmail = async (accountMail) => {
  * @param {String} accountMail 
  * @param {String} accountPassword 
  * @param {String} accountType 
+ * @param {String} userLocalisation 
+ * @param {Array} userArticlesLinked 
+ * @param {String} userCategories 
+ * @param {String} userDistance 
+ * @param {String} userPushTokens 
+ * @param {String} userLogoURL
  * @returns {User} Account and user infos in account.user
  */
-const createAccountAndPopulate = async (accountMail, accountPassword, accountType) => {
-    const account = await createAccount(accountMail, accountPassword, accountType);
+const createAccountAndPopulate = async (accountMail, accountPassword, accountType,userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL) => {
+    const account = await createAccount(accountMail, accountPassword, accountType,userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL);
     return getAccountById(account._id)
 };
 
-const createAccount = async (accountMail, accountPassword, accountType) => {
+const createAccount = async (accountMail, accountPassword, accountType, userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL) => {
     const hashedPassword = await passwordEncryption.passwordEncryption(accountPassword);
     try {
-        const user = new User({})
-        await user.save()
-        try {
+        const user = createUser(userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL)
+        
+        try{
             const accountMailLowerCased = accountMail.toLowerCase()
             const account = new Account({ accountMail: accountMailLowerCased, accountPassword: hashedPassword, user: user._id, accountType });
             return await account.save()
