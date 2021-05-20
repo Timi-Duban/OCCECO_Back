@@ -1,4 +1,5 @@
 const Article = require('../models/Article');
+const User = require('../models/User');
 
 const createArticle = async (articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate, articleCategories, articleLocalisation, articleDateEvent, isEvent) => {
     console.log(articleTitle)
