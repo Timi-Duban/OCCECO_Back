@@ -53,42 +53,5 @@ const articleSchema = new mongoose.Schema({
     }
 });
 
-articleSchema.post('save', function(doc, next) {
-    User
-    .find({userCategories: {$in : doc.articleCategories }})
-    .then(users => {
-        console.log(users)
-        users.forEach(user => {
-            user.userArticlesLinked.push({articleId: doc._id, isOpen: false})
-            user.save()
-        })
-    })
-    
-    next();
-});
-articleSchema.post('findOneAndUpdate', function(doc, next) {
-    User
-    .find({userCategories: {$in : doc.articleCategories }})
-    .then(users => {
-        console.log(users)
-        users.forEach(user => {
-            if (!user.userArticlesLinked.includes(a => a.articleId === doc._id)){
-                user.userArticlesLinked.push({articleId: doc._id, isOpen: false})
-            }
-            else {
-                user.userArticlesLinked = user.userArticlesLinked.map(a => {
-                    if (a.articleId === doc._id){
-                        a.isOpen = false;
-                    }
-                    return a 
-                })
-            }
-            
-            user.save()
-        })
-    })
-    
-    next();
-});
 module.exports = mongoose.model('Article', articleSchema);
 

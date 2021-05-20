@@ -16,6 +16,7 @@
     "express": "4.17.1",
     "http": "0.0.1-security",
     "jsonwebtoken": "8.5.1",
+    "kareem": "^2.3.2",
     "moment": "2.24.0",
     "mongodb": "latest",
     "mongoose": "^5.12.3",
