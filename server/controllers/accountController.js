@@ -8,10 +8,10 @@ const createUser = require('./userController');
  * @param {mongoose.ObjectId} _id 
  * @returns {Account} Account infos
  */
-const getAccountById = async(_id) => {
+const getAccountById = async (_id) => {
     try {
         return await Account.findById(_id).populate({
-            path : 'user', populate:{path:'userCategories'}
+            path: 'user', populate: { path: 'userCategories' }
         });
     } catch (error) {
         console.log(error)
@@ -23,14 +23,14 @@ const getAccountById = async(_id) => {
  * @param {String} accountMail 
  * @returns {Account} Account infos
  */
-const getAccountByEmail = async(accountMail) => {
+const getAccountByEmail = async (accountMail) => {
     try {
         const mailWithoutWhiteSpaces = String(accountMail).trim();
         const accountMailLowerCased = mailWithoutWhiteSpaces.toLowerCase();
-        return await Account.findOne({accountMail: accountMailLowerCased}).populate({
-            path : 'user', populate:{path:'userCategories'}
+        return await Account.findOne({ accountMail: accountMailLowerCased }).populate({
+            path: 'user', populate: { path: 'userCategories' }
         });
-    } catch(error) {
+    } catch (error) {
         throw error;
     }
 };
@@ -59,7 +59,7 @@ const createAccount = async (accountMail, accountPassword, accountType, userLoca
         
         try{
             const accountMailLowerCased = accountMail.toLowerCase()
-            const account = new Account({accountMail: accountMailLowerCased, accountPassword: hashedPassword, user: user._id, accountType});
+            const account = new Account({ accountMail: accountMailLowerCased, accountPassword: hashedPassword, user: user._id, accountType });
             return await account.save()
         } catch (error) {
             console.log("error while creating account")
@@ -75,13 +75,11 @@ const createAccount = async (accountMail, accountPassword, accountType, userLoca
  * @param {String} accountPassword 
  * @returns {Account} updated Account infos
  */
-const updatePassword = async (_id,accountPassword) => {
+const updatePassword = async (_id, accountPassword) => {
     try {
         const hashedPassword = await passwordEncryption.passwordEncryption(accountPassword);
-        const account = (await Account.findOneAndUpdate({_id},{accountPassword:hashedPassword},{new:true})).populate({
-            path : 'user', populate:{path:'userCategories'}
-        });
-        return account
+        const account = (await Account.findOneAndUpdate({ _id }, { accountPassword: hashedPassword }, { new: true }));
+        return getAccountById(account._id);
     } catch (error) {
         throw error;
     }
@@ -94,12 +92,10 @@ const updatePassword = async (_id,accountPassword) => {
  * @returns {Account} updated Account infos
  */
 const updateMail = async (accountId, accountMail) => {
-    try{
-        const account = (await Account.findOneAndUpdate({_id: accountId}, {accountMail}, {new:true})).populate({
-            path : 'user', populate:{path:'userCategories'}
-        });
-        return account
-    }catch (error) {
+    try {
+        const account = (await Account.findOneAndUpdate({ _id: accountId }, { accountMail }, { new: true }));
+        return getAccountById(account._id);
+    } catch (error) {
         throw error;
     }
 };
@@ -109,33 +105,32 @@ const updateMail = async (accountId, accountMail) => {
  * @param {String} accountType
  * @returns {Account} updated Account infos
  */
- const updateType = async (accountId, accountType) => {
-    try{
-        return (await Account.findOneAndUpdate({_id: accountId}, {accountType}, {new:true})).populate({
-            path : 'user', populate:{path:'userCategories'}
-        });
-    }catch (error) {
+const updateType = async (accountId, accountType) => {
+    try {
+        const account = await Account.findOneAndUpdate({ _id: accountId }, { accountType }, { new: true });
+        return getAccountById(account._id);
+    } catch (error) {
         throw error;
     }
-}; 
+};
 
 /**
  * @param {mongoose.ObjectId} _id 
  * @returns {Account} deleted Account infos
  */
 const deleteAccount = async (_id) => {
-    try{
-        console.log("deleted account : ",_id)
-        return await Account.deleteOne({_id})
-    }catch (error) {
+    try {
+        console.log("deleted account : ", _id)
+        return await Account.deleteOne({ _id })
+    } catch (error) {
         throw error;
     }
 };
 
-const getAllAccounts = async() => {
+const getAllAccounts = async () => {
     try {
         return await Account.find().populate({
-            path : 'user', populate:{path:'userCategories'}
+            path: 'user', populate: { path: 'userCategories' }
         });
     } catch (error) {
         console.log(error)

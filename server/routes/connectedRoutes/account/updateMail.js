@@ -8,12 +8,13 @@ module.exports = async (req, res) => {
     if (!req.body.newAccountMail || !req.body.newAccountMail.toLowerCase().match(regEmail)){
         return res.status(400).json({error : "Input(s) non valide(s)"});
     }
-    if (await AccountController.getAccountByEmail(req.body.newAccountMail)) {
+    const accountMail = req.body.newAccountMail.toLowerCase();
+    if (await AccountController.getAccountByEmail(accountMail)) {
         return res.status(400).json({ error: "Cet email est déjà utilisé" });
     } 
     else {
         try {
-            const account = await AccountController.updateMail(req.token.id, req.body.newAccountMail);
+            const account = await AccountController.updateMail(req.token.id, accountMail);
             return res.status(200).json(account);
         }
         catch (e) {
