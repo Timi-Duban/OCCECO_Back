@@ -1,4 +1,5 @@
 const { Expo } = require('expo-server-sdk');
+const moment = require('moment');
 const UserController = require('../userController')
 const ArticleController = require('../articleController');
 
@@ -7,45 +8,54 @@ const sendDailyNotifications = async () => {
     // optionally providing an access token if you have enabled push security
     let expo = new Expo(/*{ accessToken: process.env.EXPO_ACCESS_TOKEN }*/);
 
-    // Import the notifications of the day
-    let dailyNotifications = await ArticleController.getDailyArticles();
+    // Import all users ID, tokens and notifications
+    let allUsers = await UserController.getAllUsers();
+    // // Import the notifications of the day
+    // let dailyNotifications = await ArticleController.getDailyArticles();
 
     // Create the messages that you want to send to clients by group of 100
     let messages = [[]];
 
-    // For each notification, for each user concerned, add the message to the list messages
-    for (let oneNotification of dailyNotifications) {
-        let usersConcerned = await UserController.getUsersByFilters(oneNotification.articleCategories, oneNotification.articleLocalisation);
-        for (const aUser of usersConcerned) {
-            for (const pushToken of aUser.userPushTokens) {
-                // Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
+    // For each user get all notifications of the day
+    for (let aUser of allUsers) {
+        if (aUser.userArticlesLinked.length > 0) {
+            let hisNotifications = await filterNotifications(aUser.userArticlesLinked);
+            // For each notification, send it to each user's token.
+            for (let oneNotification of hisNotifications) {
+                for (const pushToken of aUser.userPushTokens) {
+                    // Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
 
-                // Check that all your push tokens appear to be valid Expo push tokens
-                if (!Expo.isExpoPushToken(pushToken)) {
-                    console.error(`Push token ${pushToken} is not a valid Expo push token. Deleting...`);
-                    UserController.deleteUserPushTokenById(aUser._id, pushToken)
-                    continue;
-                }
+                    // Check that all your push tokens appear to be valid Expo push tokens
+                    if (!Expo.isExpoPushToken(pushToken)) {
+                        console.error(`Push token ${pushToken} is not a valid Expo push token. Deleting...`);
+                        UserController.deleteUserPushTokenById(aUser._id, pushToken)
+                        continue;
+                    }
 
-                // Verify messages length to avoid sending more than 100 messages at a time (expo limit)
-                if (messages[messages.length - 1].length > 98) {
-                    messages.push([])
+                    // Verify messages length to avoid sending more than 100 messages at a time (expo limit)
+                    if (messages[messages.length - 1].length > 98) {
+                        messages.push([])
+                    }
+
+                    let body = oneNotification.articleId.isEvent
+                        ? "Date de début : " + oneNotification.articleId.articleDateEvent.format("dddd, MMMM Do YYYY")
+                        : oneNotification.articleId.articleCategories.length > 0
+                            ? oneNotification.articleId.articleCategories[0].nameType
+                            : ""
+                    // Construct a message (see https://docs.expo.io/push-notifications/sending-notifications/)
+                    messages[messages.length - 1].push({
+                                to: pushToken,
+                                title: oneNotification.articleId.articleTitle,
+                                ttl: 80000, // notification is sent up to 24h after the sending date if not delivered yet
+                                body: body,
+                                // data: { withSome: 'data' },
+                            })
                 }
-                // Construct a message (see https://docs.expo.io/push-notifications/sending-notifications/)
-                messages[messages.length - 1].push({
-                    to: pushToken,
-                    title: oneNotification.articleTitle,
-                    ttl: 80000, // notification is sent up to 24h after the sending date if not delivered yet
-                    // pritority: 'normal', // | 'high', to test
-                    body: 'This is a test notification',
-                    data: { withSome: 'data' },
-                })
             }
         }
     }
     console.log("notificationSender - messages ", messages);
 
-    let nbNotificationsSent = 0;
     // Send and handle responses of 100 notifications at a time
     for (let indiceMessages = 0; indiceMessages < messages.length; indiceMessages++) {
         // The Expo push notification service accepts batches of notifications so
@@ -173,6 +183,20 @@ const sendDailyNotifications = async () => {
             }
         })();
     }
+}
+
+const filterNotifications = async (notifications) => {
+    const today = moment();
+    if (!notifications) {
+        return [];
+    }
+    let returnNotifications = [];
+    for (let notification of notifications) {
+        if (today.isSame(notification.articleId.articleStartDate, 'day')) {
+            returnNotifications.push(notification)
+        }
+    }
+    return returnNotifications;
 }
 
 module.exports = {

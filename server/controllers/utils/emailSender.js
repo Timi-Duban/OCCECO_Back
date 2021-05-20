@@ -4,7 +4,7 @@ const nodemailer = require("nodemailer");
 
 const sendForgotPasswordEmail = async (adress, url) => {
     const subject = "Mot de passe oublié";
-    const baliseUrl = '<a href="' + url + '">OCCECO</a>';
+    const baliseUrl = '<a href="' + url + '">' + url + '</a>';
     const body = "<h3>Avez-vous oublié votre mot de passe ?</h3>" +
         "<p> Pas d'inquiétude, ça arrive ! <br/> Suivez ce lien dans les deux heures pour renseigner un nouveau mot de passe</p>" +
         baliseUrl +
@@ -43,7 +43,7 @@ const sendMyMail = async (adress, subject, body) => {
 
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-            return console.log("\n\n\nerreur lors de l'envoie de mail : ", error);
+            return console.log("erreur lors de l'envoi de mail : ", error);
         }
         console.log('Message sent: ' + info.response);
     });

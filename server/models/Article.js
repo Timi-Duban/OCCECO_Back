@@ -5,12 +5,12 @@ const User = require('./User');
 const articleSchema = new mongoose.Schema({
     articleTitle: {
         type: String,
-        required: [ true, "Le nom de l'article est obligatoire" ]
+        required: [true, "Le nom de l'article est obligatoire"]
     },
 
     articleLink: {
         type: String,
-        required: [ true, "Le lien de l'article est obligatoire" ]
+        required: [true, "Le lien de l'article est obligatoire"]
     },
 
     articleDescription: {
@@ -19,8 +19,8 @@ const articleSchema = new mongoose.Schema({
 
     articleStartDate: {
         type: Date,
-        required: [ true, "La date de début de l'article est obligatoire" ],
-        default: moment().set({'hour':8, 'minute':00}), // Par défaut initialise à la date d'aujourd'hui
+        required: [true, "La date de début de l'article est obligatoire"],
+        default: moment().set({ 'hour': 8, 'minute': 00 }), // Par défaut initialise à la date d'aujourd'hui
     },
 
     articleEndDate: {
@@ -43,7 +43,7 @@ const articleSchema = new mongoose.Schema({
         type: mongoose.ObjectId, ref: "TypeArticle"
     }],
 
-    articleEditor:{
+    articleEditor: {
         type: mongoose.ObjectId, ref: "Account"
     },
 

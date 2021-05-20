@@ -67,6 +67,5 @@ module.exports = {
     createArticle,
     getAllArticles,
     deleteArticle,
-    updateArticle,
-    getDailyArticles
+    updateArticle
 }

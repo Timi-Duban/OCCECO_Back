@@ -65,7 +65,7 @@ const updateUser = async (_id, userLocalisation, userArticlesLinked, userCategor
  */
 const addUserPushToken = async (_id, userPushToken) => {
     try {
-        return (await User.findOneAndUpdate({ _id }, { $addToSet : {userPushTokens : userPushToken} }, { new: true })).populate('userCategories');
+        return (await User.findOneAndUpdate({ _id }, { $addToSet: { userPushTokens: userPushToken } }, { new: true })).populate('userCategories');
     } catch (error) {
         console.log(error)
         throw error;
@@ -81,7 +81,7 @@ const addUserPushToken = async (_id, userPushToken) => {
 const deleteUserPushTokenById = async (_id, userPushToken) => {
     console.log(" >>> deleteUserPushTokenById", _id, userPushToken);
     try {
-        return (await User.findOneAndUpdate({ _id }, { $pull : {userPushTokens : userPushToken} }, { new: true }));
+        return (await User.findOneAndUpdate({ _id }, { $pull: { userPushTokens: userPushToken } }, { new: true }));
     } catch (error) {
         console.log(error)
         throw error;
@@ -96,7 +96,7 @@ const deleteUserPushTokenById = async (_id, userPushToken) => {
 const deleteUserPushToken = async (userPushToken) => {
     console.log(" >>> deleteUserPushToken ", userPushToken);
     try {
-        userModified = await User.findOneAndUpdate({userPushTokens: userPushToken}, { $pull : {userPushTokens : userPushToken} }, { new: true });
+        userModified = await User.findOneAndUpdate({ userPushTokens: userPushToken }, { $pull: { userPushTokens: userPushToken } }, { new: true });
         if (!userModified) {
             console.error("deleteUserPushToken - NO USER FOUND WITH THIS TOKEN ", userPushToken);
         }
@@ -107,8 +107,11 @@ const deleteUserPushToken = async (userPushToken) => {
     }
 }
 
-const getUsersByFilters = async ( categories, location ) => {
-    return await User.find();
+/**
+ * @returns an array of all users
+ */
+const getAllUsers = async () => {
+    return await User.find().populate({ path: 'userArticlesLinked.articleId', populate: {path: 'articleCategories' }});
 }
 
 const linkUserWithArticle = async (user) => {
@@ -128,7 +131,7 @@ const linkUserWithArticle = async (user) => {
         getUserById,
         updateUser,
         addUserPushToken,
-        deleteUserPushTokenById,
         deleteUserPushToken,
         getUsersByFilters
     }
+        deleteUserPushTokenById,

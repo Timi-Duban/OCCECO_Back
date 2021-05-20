@@ -1,12 +1,14 @@
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 const express = require('express');
+const cron = require('node-cron'); // To send notifications every day
+const notificationSender = require('./server/controllers/utils/notificationSender')
 const cors = require('cors'); // To auth
 const bodyParser = require('body-parser'); // Convert old formats
 const mongoose = require('mongoose'); // Access to the database
 const morgan = require('morgan'); // To have clearer responses
 const app = express();
 
-// Accès à la base de données
+// Database access
 const url = process.env.MONGODB_URI;
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  });
 const db = mongoose.connection;
@@ -18,6 +20,12 @@ db.once('open', _ => {
 db.on('error', err => {
     console.error('connection error:', err)
 });
+
+// Send notifications at 08:00:00 am every day
+cron.schedule('0 0 08 * * *', () => {
+    console.log(' >>> CRON : envoi des notifications <<<');
+    notificationSender.sendDailyNotifications();
+  });
 
 app.use(bodyParser.json()); // Convert old formats
 app.use(morgan('dev')); // Color the status response, dev use

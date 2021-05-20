@@ -11,6 +11,7 @@ module.exports = async (req, res, next) => {
         if (!req.body.accountMail || !req.body.accountMail.toLowerCase().match(regEmail)) {
             return res.status(400).json({ error: "Input(s) non valide(s)" });
         }
+        const email = String(req.body.accountMail).trim();
 
         if (!req.body.basicUrl) {
             return res.status(500).json({
@@ -19,18 +20,18 @@ module.exports = async (req, res, next) => {
         }
 
         /* Check if database knows this mail */
-        if (!await accountController.getAccountByEmail(req.body.accountMail)) {
+        if (!await accountController.getAccountByEmail(email)) {
             return res.status(400).json({ error: "Cet email n'est pas dans notre base de données" });
         }
         else {
             const tokenAccount = {
-                accountMail: req.body.accountMail
+                accountMail: email
             };
             const token = jwt.sign(tokenAccount, process.env.tokenkey, { expiresIn: '124min' });
             const url = req.body.basicUrl + "/?token=" + token;
             console.log("url : ", url);
 
-            await emailSender.sendForgotPasswordEmail(req.body.accountMail, url);
+            await emailSender.sendForgotPasswordEmail(email, url);
 
             return res.status(200).json({
                 success: true,
