@@ -132,6 +132,6 @@ const linkUserWithArticle = async (user) => {
         updateUser,
         addUserPushToken,
         deleteUserPushToken,
-        getUsersByFilters
-    }
+        getAllUsers,
         deleteUserPushTokenById,
+    }
