@@ -47,17 +47,27 @@ const getAccountByEmail = async (accountMail) => {
  * @param {String} userLogoURL
  * @returns {User} Account and user infos in account.user
  */
-const createAccountAndPopulate = async (accountMail, accountPassword, accountType,userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL) => {
-    const account = await createAccount(accountMail, accountPassword, accountType,userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL);
+const createAccountAndPopulate = async (accountMail, accountPassword, accountType) => {
+    const account = await createAccount(accountMail, accountPassword, accountType);
     return getAccountById(account._id)
 };
+// const createAccountAndPopulate = async (accountMail, accountPassword, accountType,userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL) => {
+//     const account = await createAccount(accountMail, accountPassword, accountType,userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL);
+//     return getAccountById(account._id)
+// };
 
 const createAccount = async (accountMail, accountPassword, accountType, userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL) => {
     const hashedPassword = await passwordEncryption.passwordEncryption(accountPassword);
     try {
-        const user = createUser(userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL)
-        
-        try{
+        //         const user = createUser(userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL)
+        const user = new User({
+            userLocalisation: {
+                lat: 43.60910915581649,
+                lng: 3.877487182617188
+            }
+        })
+        await user.save()
+        try {
             const accountMailLowerCased = accountMail.toLowerCase()
             const account = new Account({ accountMail: accountMailLowerCased, accountPassword: hashedPassword, user: user._id, accountType });
             return await account.save()

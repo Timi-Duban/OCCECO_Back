@@ -1,7 +1,6 @@
 const { Expo } = require('expo-server-sdk');
 const moment = require('moment');
-const UserController = require('../userController')
-const ArticleController = require('../articleController');
+const UserController = require('../userController');
 
 const sendDailyNotifications = async () => {
     // Create a new Expo SDK client
@@ -14,7 +13,6 @@ const sendDailyNotifications = async () => {
     // Create the messages that you want to send to clients by group of 100
     let messages = [[]];
 
-    
     // For each user get all notifications of the day
     for (let aUser of allUsers) {
         if (aUser.userArticlesLinked.length > 0) {
@@ -23,32 +21,32 @@ const sendDailyNotifications = async () => {
             for (let oneNotification of hisNotifications) {
                 for (const pushToken of aUser.userPushTokens) {
                     // Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
-                    
+
                     // Check that all your push tokens appear to be valid Expo push tokens
                     if (!Expo.isExpoPushToken(pushToken)) {
                         console.error(`Push token ${pushToken} is not a valid Expo push token. Deleting...`);
                         UserController.deleteUserPushTokenById(aUser._id, pushToken)
                         continue;
                     }
-                    
+
                     // Verify messages length to avoid sending more than 100 messages at a time (expo limit)
                     if (messages[messages.length - 1].length > 98) {
                         messages.push([])
                     }
-                    
+
                     let body = oneNotification.articleId.isEvent
-                    ? "Date de début : " + oneNotification.articleId.articleDateEvent.format("dddd, MMMM Do YYYY")
-                    : oneNotification.articleId.articleCategories.length > 0
-                    ? oneNotification.articleId.articleCategories[0].nameType
-                    : ""
+                        ? "Date de début : " + oneNotification.articleId.articleDateEvent.format("dddd, MMMM Do YYYY")
+                        : oneNotification.articleId.articleCategories.length > 0
+                            ? oneNotification.articleId.articleCategories[0].nameType
+                            : ""
                     // Construct a message (see https://docs.expo.io/push-notifications/sending-notifications/)
                     messages[messages.length - 1].push({
                         to: pushToken,
                         title: oneNotification.articleId.articleTitle,
                         ttl: 80000, // notification is sent up to 24h after the sending date if not delivered yet
                         body: body,
-                                // data: { withSome: 'data' },
-                            })
+                        // data: { withSome: 'data' },
+                    })
                 }
             }
         }
@@ -139,10 +137,7 @@ const sendDailyNotifications = async () => {
                     // notification and information about an error, if one occurred.
                     for (let receiptId in receipts) {
                         let { status, message, details } = receipts[receiptId];
-                        if (status === 'ok') {
-                            nbNotificationsSent++;
-                            continue;
-                        } else if (status === 'error') {
+                        if (status === 'error') {
                             console.error(
                                 'There was an error sending a notification: ${message}'
                             );

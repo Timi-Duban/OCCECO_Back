@@ -20,7 +20,7 @@ const articleSchema = new mongoose.Schema({
     articleStartDate: {
         type: Date,
         required: [true, "La date de début de l'article est obligatoire"],
-        default: moment().set({ 'hour': 8, 'minute': 00 }), // Par défaut initialise à la date d'aujourd'hui
+        default: moment().set({ 'hour': 8, 'minute': 0 }), // Par défaut initialise à la date d'aujourd'hui
     },
 
     articleEndDate: {
