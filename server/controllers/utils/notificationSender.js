@@ -3,16 +3,17 @@ const moment = require('moment');
 const UserController = require('../userController');
 
 const sendDailyNotifications = async () => {
+    console.log("\n\n\n  ---  Sending Notifications  ---");
     // Create a new Expo SDK client
     // optionally providing an access token if you have enabled push security
     let expo = new Expo(/*{ accessToken: process.env.EXPO_ACCESS_TOKEN }*/);
 
     // Import all users ID, tokens and notifications
     let allUsers = await UserController.getAllUsers();
-
+    
     // Create the messages that you want to send to clients by group of 100
     let messages = [[]];
-
+    
     // For each user get all notifications of the day
     for (let aUser of allUsers) {
         if (aUser.userArticlesLinked.length > 0) {

@@ -36,13 +36,13 @@ app.use(cors()); // To control who can connect, all origins here
 app.use("/api", require('./server/routes/authRoutes'));
 
 // routes accessibles par n'importe quel utilisateur connecté
-app.use("/api",/* require('./server/middleware/auth'), */ require('./server/routes/connectedRoutes'));
+app.use("/api", require('./server/middleware/auth'), require('./server/routes/connectedRoutes'));
 
 //routes accessibles par les partenaires et administrateurs
- app.use("/api", /*require('./server/middleware/partner'), */require('./server/routes/partnerRoutes'));
+ app.use("/api", require('./server/middleware/partner'), require('./server/routes/partnerRoutes'));
 
 //routes accessibles par les administrateurs uniquement 
-app.use("/api",/* require('./server/middleware/admin'), */require('./server/routes/adminRoutes'));
+app.use("/api", require('./server/middleware/admin'), require('./server/routes/adminRoutes'));
 
 /* Handling errors */
 app.use((req,res,next) => {

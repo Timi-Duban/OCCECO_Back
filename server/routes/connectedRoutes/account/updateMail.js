@@ -5,13 +5,18 @@ const regEmail = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-
 
 module.exports = async (req, res) => {
     /* Check inputs */
-    if (!req.body.newAccountMail || !req.body.newAccountMail.toLowerCase().match(regEmail)){
-        return res.status(400).json({error : "Input(s) non valide(s)"});
+    if (!req.body.newAccountMail || !req.body.newAccountMail.toLowerCase().match(regEmail)) {
+        return res.status(400).json({ error: "Input(s) non valide(s)" });
+    }
+    if (!req.token) { // Check auth middlewares
+        return res.status(500).json({
+            error: "Erreur serveur, réessayez plus tard"
+        });
     }
     const accountMail = req.body.newAccountMail.toLowerCase();
     if (await AccountController.getAccountByEmail(accountMail)) {
         return res.status(400).json({ error: "Cet email est déjà utilisé" });
-    } 
+    }
     else {
         try {
             const account = await AccountController.updateMail(req.token.id, accountMail);
