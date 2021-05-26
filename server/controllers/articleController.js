@@ -52,9 +52,17 @@ const getDailyArticles = async () => {
 const linkUserWithArticle = async (article) => {
     await User
     .find({userCategories: {$in : article.articleCategories }})
-    .then(articles => {
-        articles.forEach(user => {
-            user.userArticlesLinked.push({articleId: article._id, isOpen: false})
+    .then(users => {
+        users.forEach(user => {
+            if (article.articleLocalisation && article.articleLocalisation.lat && article.articleLocalisation.lng){
+                if (geolib.getDistance(article.articleLocalisation, user.userLocalisation) <= user.userDistance*1000){
+                    user.userArticlesLinked.push({articleId: article._id, isOpen: false})
+                }
+            }
+            if (!article.articleLocalisation){
+                user.userArticlesLinked.push({articleId: article._id, isOpen: false})
+            }
+            
             user.save()
         })
     })

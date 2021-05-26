@@ -124,9 +124,12 @@ const linkUserWithArticle = async (user) => {
         }
         user.userArticlesLinked = docs.filter(a => {
             if (a.articleLocalisation && a.articleLocalisation.lat && a.articleLocalisation.lng){
-                console.log(a.articleLocalisation)
-                console.log(geolib.getDistance(a.articleLocalisation, user.userLocalisation))
+                if (geolib.getDistance(a.articleLocalisation, user.userLocalisation) <= user.userDistance*1000){
+                    return true
+                }
+                return false
             }
+            return true
         })
         .map(a => ({articleId: a._id, isOpen: false}))
         await user.save()
