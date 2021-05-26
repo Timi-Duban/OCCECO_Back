@@ -56,11 +56,11 @@ const linkUserWithArticle = async (article) => {
         users.forEach(user => {
             if (article.articleLocalisation && article.articleLocalisation.lat && article.articleLocalisation.lng){
                 if (geolib.getDistance(article.articleLocalisation, user.userLocalisation) <= user.userDistance*1000){
-                    user.userArticlesLinked.push({articleId: article._id, isOpen: false})
+                    user.userArticlesLinked = [...user.userArticlesLinked, {articleId: article._id, isOpen: false} ]
                 }
             }
             if (!article.articleLocalisation){
-                user.userArticlesLinked.push({articleId: article._id, isOpen: false})
+                user.userArticlesLinked = [...user.userArticlesLinked, {articleId: article._id, isOpen: false} ]
             }
             
             user.save()
