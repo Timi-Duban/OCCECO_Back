@@ -30,8 +30,24 @@ const createUser = async (userLocalisation, userArticlesLinked, userCategories, 
  */
 const getUserById = async (_id) => {
     try {
+        
+        userArticlesLinked = []
+        user = await User.findById(_id)//.populate({path : 'userCategories userArticlesLinked', populate: {path: 'articleId'}})
+        articleCategories = []
+        for(const userCategorie in user.userCategories ){
+            let _id =  user.userCategories[userCategorie]._id
+            let type = await TypeArticle.findOne({_id});
+            articleCategories.push(type)
+        }
+        for(const userArticlesLink in user.userArticlesLinked ){
+            let _id =  user.userArticlesLinked[userArticlesLink].articleId._id
+            let article = await Article.findOne({_id}).populate('articleCategories');
+            userArticlesLinked.push({"_id": user.userArticlesLinked[userArticlesLink]._id, "articleId":article, "isOpen":user.userArticlesLinked[userArticlesLink].isOpen})
+        }
+        user.userCategories = await articleCategories
+        user.userArticlesLinked = await userArticlesLinked
 
-        return await (await User.findById(_id)).populate({path : 'userCategories userArticlesLinked', populate: {path: 'articleId'}})
+        return user
 
     } catch (error) {
         console.log(error)
