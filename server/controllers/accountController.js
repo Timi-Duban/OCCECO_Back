@@ -11,7 +11,7 @@ const createUser = require('./userController');
 const getAccountById = async (_id) => {
     try {
         return await Account.findById(_id).populate({
-            path: 'user', populate: { path: 'userCategories' }
+            path: 'user', populate: { path: 'userCategories userArticlesLinked', populate: {path: 'articleId'} }
         });
     } catch (error) {
         console.log(error)
@@ -28,7 +28,7 @@ const getAccountByEmail = async (accountMail) => {
         const mailWithoutWhiteSpaces = String(accountMail).trim();
         const accountMailLowerCased = mailWithoutWhiteSpaces.toLowerCase();
         return await Account.findOne({ accountMail: accountMailLowerCased }).populate({
-            path: 'user', populate: { path: 'userCategories' }
+            path: 'user', populate: { path: 'userCategories userArticlesLinked', populate: {path: 'articleId'} }
         });
     } catch (error) {
         throw error;
