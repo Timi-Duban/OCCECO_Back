@@ -1,6 +1,6 @@
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 const express = require('express');
-const cron = require('node-cron'); // To send notifications every day
+const cron = require('node-cron'); // To do a task every day
 const notificationSender = require('./server/controllers/utils/notificationSender')
 const cors = require('cors'); // To auth
 const bodyParser = require('body-parser'); // Convert old formats

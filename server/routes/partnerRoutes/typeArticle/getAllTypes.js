@@ -2,7 +2,6 @@ const TypeArticleController = require('../../../controllers/typeArticleControlle
 
 module.exports = async (req, res) => {
     try{
-        console.log("getAllTypes route OK")
         const typesArticle = await TypeArticleController.getAllTypes(); 
         return res.status(200).json(typesArticle);
     }
