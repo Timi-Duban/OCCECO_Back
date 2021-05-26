@@ -30,7 +30,9 @@ const createUser = async (userLocalisation, userArticlesLinked, userCategories, 
  */
 const getUserById = async (_id) => {
     try {
+
         return await (await User.findById(_id)).populate({path : 'userCategories userArticlesLinked', populate: 'articleId'})
+
     } catch (error) {
         console.log(error)
         throw error;

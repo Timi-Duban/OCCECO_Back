@@ -12,4 +12,4 @@ module.exports = async (req, res) => {
             error : "Impossible d'update cet article"
         });
     }
-};
+}; 
