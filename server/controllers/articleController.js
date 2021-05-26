@@ -1,11 +1,11 @@
 const Article = require('../models/Article');
 const User = require('../models/User');
 
-const createArticle = async (articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate, articleCategories, articleLocalisation, articleDateEvent, isEvent) => {
+const createArticle = async (articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate, articleCategories, articleLocalisation, isEvent, articleDateEvent ) => {
     console.log(articleTitle)
     try {
         const article = new Article({
-            articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate, articleCategories, articleLocalisation, articleDateEvent, isEvent
+            articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate, articleCategories, articleLocalisation, isEvent, articleDateEvent
         });
         console.log(article);
         await article.save();
@@ -40,7 +40,7 @@ const getAllArticles = async() => {
 const updateArticle = async (_id, articleTitle, articleLink, articleDescription, articleStartDate, articleEndDate, articleCategories, articleLocalisation, articleDateEvent, isEvent) => {
     console.log("je suis bien rentré dans le update");
     try {
-        const articleUpdated = await Article.findOneAndUpdate({_id},{articleTitle, articleLink, articleDescription, articleStartDate, articleEndDate, articleCategories, articleDateEvent, isEvent},{new:true}).populate('articleCategories');
+        const articleUpdated = await Article.findOneAndUpdate({_id},{articleTitle, articleLink, articleDescription, articleStartDate, articleEndDate, articleCategories, articleDateEvent, isEvent, articleLocalisation},{new:true}).populate('articleCategories');
         await linkUserWithArticle(articleUpdated);
         return (articleUpdated); 
     } catch (error) {
@@ -67,5 +67,6 @@ module.exports = {
     createArticle,
     getAllArticles,
     deleteArticle,
-    updateArticle
+    updateArticle,
+    getDailyArticles
 }

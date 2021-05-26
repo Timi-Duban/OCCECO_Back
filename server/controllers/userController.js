@@ -3,6 +3,7 @@ const TypeArticle = require('../models/TypeArticle'); //to populate user categor
 const Account = require('../models/Account');
 const accountController = require('./accountController');
 const Article = require('../models/Article');
+const geolib = require('geolib');
 
 /**
  * @param {[mongoose.ObjectId]} accounts REQUIRED: account linked to the User
@@ -17,7 +18,7 @@ const createUser = async (userLocalisation, userArticlesLinked, userCategories, 
     try {
         const user = new User({ userLocalisation, userArticlesLinked, userCategories, userDistance, userPushTokens, userLogoURL });
         //return (await user.save()).populate('userCategories');
-        return linkUserWithArticle(user);
+        return await linkUserWithArticle(user);
     } catch (error) {
         throw error;
     }
@@ -115,15 +116,22 @@ const getAllUsers = async () => {
 }
 
 const linkUserWithArticle = async (user) => {
+    
     await Article
     .find({articleCategories: {$in : user.userCategories.map(c => c._id) }}, async function (err, docs) {
         if (err){
             console.log("err = ", err)
         }
-        user.userArticlesLinked = docs.map(a => ({articleId: a._id, isOpen: false}))
-        return await user.save()
+        user.userArticlesLinked = docs.filter(a => {
+            if (a.articleLocalisation && a.articleLocalisation.lat && a.articleLocalisation.lng){
+                console.log(a.articleLocalisation)
+                console.log(geolib.getDistance(a.articleLocalisation, user.userLocalisation))
+            }
+        })
+        .map(a => ({articleId: a._id, isOpen: false}))
+        await user.save()
     });
-    
+    return user
 }
 
     module.exports = {
