@@ -1,13 +1,9 @@
 const Article = require('../models/Article');
 const User = require('../models/User');
 
-const createArticle = async (articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate, articleCategories, articleLocalisation, articleDateEvent, isEvent) => {
-    console.log(articleTitle)
+const createArticle = async (newArticle) => {
     try {
-        const article = new Article({
-            articleTitle, articleLink,articleDescription, articleStartDate, articleEndDate, articleCategories, articleLocalisation, articleDateEvent, isEvent
-        });
-        console.log(article);
+        const article = new Article(newArticle)
         await article.save();
         const articleCreated = await Article.findOne({_id: article._id }).populate('articleCategories');
         await linkUserWithArticle(articleCreated);

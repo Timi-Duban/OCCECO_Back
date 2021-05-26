@@ -2,7 +2,7 @@ const ArticleController = require('../../../controllers/articleController');
 
 module.exports = async (req, res) => {
     try {
-        const article = await ArticleController.createArticle(req.body.articleTitle, req.body.articleLink, req.body.articleDescription, req.body.articleStartDate, req.body.articleEndDate, req.body.articleCategories, req.body.articleDateEvent, req.body.isEvent)
+        const article = await ArticleController.createArticle(req.body.newArticle)
         return res.status(200).json(article);
     }
     catch(e){
