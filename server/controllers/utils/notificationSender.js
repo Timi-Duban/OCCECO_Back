@@ -36,7 +36,7 @@ const sendDailyNotifications = async () => {
                     }
 
                     let body = oneNotification.articleId.isEvent
-                        ? "Date de début : " + oneNotification.articleId.articleDateEvent.format("dddd, MMMM Do YYYY")
+                        ? moment(oneNotification.articleId.articleDateEvent).format("dddd, MMMM Do YYYY")
                         : oneNotification.articleId.articleCategories.length > 0
                             ? oneNotification.articleId.articleCategories[0].nameType
                             : ""
