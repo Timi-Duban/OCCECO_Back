@@ -3,7 +3,7 @@ Bienvenue sur le back de l'application OCCECO, réalisée par 3 élèves ingéni
 
 # Prototype
 Cette application est actuellement dans sa première version stable, nous sommes à la fin du projet.
-Une autre équipe devrait reprendre cet repo l'an prochain. D'ici là, si vous avez besoin de quoi que ce soit, contactez Timi Duban sur n'importe quel réseau ou sur ti.mi.34@hotmail.fr
+Une autre équipe devrait reprendre ce repo l'an prochain. D'ici là, si vous avez besoin de quoi que ce soit, contactez Timi Duban sur n'importe quel réseau ou sur ti.mi.34@hotmail.fr
 
 ## Project setup
 ```
