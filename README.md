@@ -1,8 +1,9 @@
 ## OCCECO !
 Bienvenue sur le back de l'application OCCECO, réalisée par 3 élèves ingénieurs de Polytech Montpellier : Timi Duban, Rogerio Mensah et Alexia Ognard.
 
-# WIP
-Nous sommes actuellement en cours de développement, nous aurons une version stable fin mai !
+# Prototype
+Cette application est actuellement dans sa première version stable, nous sommes à la fin du projet.
+Une autre équipe devrait reprendre cet repo l'an prochain. D'ici là, si vous avez besoin de quoi que ce soit, contactez Timi Duban sur n'importe quel réseau ou sur ti.mi.34@hotmail.fr
 
 ## Project setup
 ```
